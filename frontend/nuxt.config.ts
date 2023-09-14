@@ -5,9 +5,9 @@ export default defineNuxtConfig({
   routeRules: {
     // Build-time static page generation
     '/': { prerender: true },
-    // Server-side rendering (default)
-    '/cat': { ssr: true },
-    // Client-side rendering
-    '/test/**': { ssr: false },
+    // Client-side rendering (CSR)
+    '/cat': { ssr: false },
+    // Server-side rendering (SSR)
+    '/test/**': { ssr: true },
   }
 })

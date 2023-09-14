@@ -2,13 +2,13 @@
   <div v-if="error" class="pb-4">
     <AlertError :errorMessage="error?.message" />
   </div>
-  <div v-if="pending" class="pb-4">
+  <div v-else-if="pending" class="pb-4">
     <AlertLoading />
   </div>
-
-  <h1 v-if="!error && !pending" class="text-2xl pb-4 justify-center">
+  <h1 v-else class="text-2xl pb-4 justify-center">
     {{ data?.fact }}
   </h1>
+
   <h2 class="text-xl pb-4 justify-center">
     {{ data?.length ?? 0 }} / {{ max_length }} characters
   </h2>
