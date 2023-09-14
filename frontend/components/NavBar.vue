@@ -15,7 +15,7 @@
 defineProps({
   title: {
     type: String,
-    default: "Amazing CTF"
+    default: "Nuxt.js Demo"
   },
 });
 </script>
