@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <NuxtWelcome />
+  <div class="flex flex-col items-center justify-center flex-grow">
+    Front page
   </div>
 </template>
 
