@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  frontend:
+    container_name: frontend
+    build:
+      context: "./frontend"
+    ports:
+      - "3000:3000"
+
+  hacking:
+    container_name: hacking
+    build:
+      context: "./hacking"
+    ports:
+      - "4000:4000"
+
+  backend:
+    container_name: backend
+    build:
+      context: "./backend"
+    ports:
+      - "5000:5000"
+    # Ensure that files folder is stored in the host machine, so data is not lost when the container is removed
+    volumes:
+      - ./backend/files:/app/backend/files
+    # depends_on:
+    #   - db
+
+  # TODO: Decide the database and link it to the backend
