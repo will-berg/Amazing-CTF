@@ -48,6 +48,8 @@
 </template>
 
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia'
+
 defineProps({
     title: {
         type: String,
@@ -56,5 +58,5 @@ defineProps({
 });
 
 const userStore = useUserStore();
-const user = ref(userStore.user);
+const { user } = storeToRefs(userStore)
 </script>
