@@ -9,3 +9,7 @@ export interface HackDetails {
     description: string;
     imageUrl: string;
 }
+
+export interface User {
+	email: string;
+}

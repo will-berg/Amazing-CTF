@@ -6,7 +6,8 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@nuxt/image',
 	'@pinia/nuxt',
-  'nuxt-vuefire'
+  	'nuxt-vuefire',
+	'nuxt-icon'
   ],
   // Auto import from stores directory
   imports: {
