@@ -1,8 +1,5 @@
 import { defineStore } from "pinia";
-
-interface User {
-    name: string;
-}
+import { User } from "../types/index";
 
 export const useUserStore = defineStore({
     id: "user",
@@ -14,8 +11,8 @@ export const useUserStore = defineStore({
     }),
     // Computed properties of the state
     getters: {
-        userName(): string {
-            return this.user?.name ?? "Anonymous";
+        userEmail(): string {
+            return this.user?.email ?? "Anonymous";
         },
     },
     // Perform operations on the state
