@@ -17,14 +17,13 @@
             <label tabindex="0" class="btn btn-circle"
                 ><Icon name="line-md:account" size="24"
             /></label>
-            <!-- Profile and logout (could probably be a function tbh) pages yet to be added -->
             <ul
                 tabindex="0"
                 class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
             >
                 <li v-if="user">
-                    <NuxtLink to="/logout"
-                        ><Icon name="material-symbols:logout" /> Logout</NuxtLink
+                    <a @click="userStore.logout()"
+                        ><Icon name="material-symbols:logout" /> Logout</a
                     >
                 </li>
                 <li v-else>
@@ -33,7 +32,7 @@
                     >
                 </li>
                 <li v-if="user">
-                    <NuxtLink to="/profile"
+                    <NuxtLink :to="'/profile/' + user.username"
                         ><Icon name="material-symbols:account-circle" /> Profile</NuxtLink
                     >
                 </li>
