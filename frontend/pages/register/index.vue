@@ -5,38 +5,42 @@
         <input placeholder="Password" type="password" v-model="user.password" />
         <input placeholder="Repeat Password" type="password" v-model="user.repeatPassword" />
 
-        <button color="gray" @click="signup">
+        <button color="gray" @click="signUp">
             Signup
         </button>
     </div>
 </template>
 
 <script setup>
-import { createUserWithEmailAndPassword } from "firebase/auth";
 const user = reactive({
     displayName: "",
     email: "",
     password: "",
     repeatPassword: "",
 });
-const auth = useFirebaseAuth();
-const router = useRouter();
-const signup = () => {
+
+const signUp = async () => {
     if (user.password !== user.repeatPassword) {
         alert("Passwords do not match");
         return;
     }
-    
-    createUserWithEmailAndPassword(auth, user.email, user.password)
-        .then(() => {
-            alert("User Created");
-            const user = useCurrentUser();
-            console.log(user)
-            router.push("/login")
+    try {
+        const res = await $fetch('http://localhost:5000/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(
+                {
+                    name: user.displayName,
+                    email: user.email,
+                    password: user.password
+                }
+            )
         })
-        .catch((error) => {
-            console.error(error);
-            alert("ERROR while creating USER");
-        });
-};
+        console.log(res)
+    }catch (e) {
+        console.log(e)
+    }
+}
 </script>
