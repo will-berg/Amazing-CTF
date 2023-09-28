@@ -1,6 +1,6 @@
 <!-- Leaderboard page -->
 <template>
-  <div class="flex flex-col items-center justify-center">
+  <div class="flex flex-col items-center m-auto">
     <div v-if="error" class="pb-4">
       <AlertError :errorMessage="error?.message" />
     </div>
@@ -8,7 +8,7 @@
       <AlertLoading />
     </div>
     <!-- Center everything in the middle of the page -->
-    <div v-else class="flex flex-col items-center justify-center">
+    <div v-else class="flex flex-col items-center m-auto">
       <h1 class="text-4xl pb-4 text-yellow-500 font-bold">Leaderboard</h1>
       <div class="flex flex-col">
         <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -58,17 +58,8 @@
                 </tbody>
               </table>
               <!-- Pagination -->
-              <div class="px-6 py-3 bg-gray-50 grid grid-cols-3 gap-4">
-                <button class="btn btn-outline" :disabled="page === 1" @click="page--">
-                  Previous
-                </button>
-                <div class="flex justify-center items-center">
-                  <span class="text-gray-900 font-bold">{{ page }}</span>
-                  <span class="text-gray-900">/{{ maxPage }}</span>
-                </div>
-                <button class="btn  btn-outline" :disabled="page === maxPage" @click="page++">
-                  Next
-                </button>
+              <div class="px-6 py-3">
+                <Pagination :page="page" :maxPage="maxPage" />
               </div>
             </div>
           </div>
