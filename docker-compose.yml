@@ -24,6 +24,7 @@ services:
       - "7017:27017"
     volumes:
       - ./backend/files:/app/backend/files
+    #  - ./mongodb_data:/data/db
 
   backend:
     depends_on:
@@ -43,6 +44,6 @@ services:
       - DB_ROOT_USERNAME=root
       - DB_PASSWORD=test
     
-    
-
+volumes:
+  mongodb_data:
   # TODO: Decide the database and link it to the backend
