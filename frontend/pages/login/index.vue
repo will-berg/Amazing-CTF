@@ -9,24 +9,29 @@
 </template>
 
 <script setup>
-import { signInWithEmailAndPassword } from "firebase/auth";
 const user = reactive({
     email: "",
     password: "",
 });
-const router = useRouter();
-const auth = useFirebaseAuth();
-const login = () => {
-    signInWithEmailAndPassword(auth, user.email, user.password)
-        .then(() => {
-            alert("User Logged In");
-            const user = useCurrentUser();
-            console.log(user)
-            router.push("/")
+
+const login = async () => {
+    try {
+        const res = await $fetch('http://localhost:5000/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(
+                {
+                    email: user.email,
+                    password: user.password
+                }
+            )
         })
-        .catch((error) => {
-            console.error(error);
-            alert("ERROR while logging in");
-        });
+        console.log(res)
+    }catch (e) {
+        console.log(e)
+    }
 }
+
 </script>
