@@ -14,3 +14,9 @@ export interface User {
 	email: string;
 	username: string;
 }
+
+export interface UserLeaderboard {
+    position: number;
+    username: string;
+    score: number;
+}
