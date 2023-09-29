@@ -1,17 +1,55 @@
 <template>
     <div
-        class="navbar rounded-lg bg-gray-800 text-white flex items-center justify-between p-4"
+        class="navbar rounded-lg bg-gray-800 text-white flex items-center justify-between p-4 space-x-4"
     >
         <div class="flex-1 flex-grow">
-            <NuxtLink to="/" class="btn btn-ghost normal-case text-xl text-white">{{
-                title
-            }}</NuxtLink>
-        </div>
-        <div>
-            <NuxtLink to="/cat" class="btn btn-ghost normal-case text-xl text-white"
-                >Cat Facts</NuxtLink
+            <NuxtLink to="/" class="btn btn-ghost normal-case text-xl text-white">
+                <!-- Random logo -->
+                <Icon name="simple-icons:cyberdefenders" size="24" />
+                {{ title }}</NuxtLink
             >
         </div>
+        <!-- Navbar links -->
+        <div class="hidden sm:flex">
+            <div>
+                <NuxtLink to="/hacking" class="btn btn-ghost normal-case text-xl text-white"
+                    >Challenges</NuxtLink
+                >
+            </div>
+            <div>
+                <NuxtLink
+                    to="/leaderboard"
+                    class="btn btn-ghost normal-case text-xl text-white"
+                    >Leaderboards</NuxtLink
+                >
+            </div>
+        </div>
+        <!-- Hamburger menu with navbar links for smaller screens -->
+        <div class="dropdown dropdown-end sm:hidden">
+            <label tabindex="0" class="btn btn-ghost btn-circle">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    class="inline-block w-5 h-5 stroke-current"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M4 6h16M4 12h16M4 18h16"
+                    ></path>
+                </svg>
+            </label>
+            <ul
+                tabindex="0"
+                class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+            >
+                <li><NuxtLink to="/hacking">Challenges</NuxtLink></li>
+                <li><NuxtLink to="/leaderboard">Leaderboards</NuxtLink></li>
+            </ul>
+        </div>
+        <!-- Profile related links -->
         <div class="dropdown dropdown-bottom dropdown-end">
             <!-- Could conditionally render profile picture here if we implement it -->
             <label tabindex="0" class="btn btn-circle"
@@ -47,7 +85,7 @@
 </template>
 
 <script lang="ts" setup>
-import { storeToRefs } from 'pinia'
+import { storeToRefs } from "pinia";
 
 defineProps({
     title: {
@@ -57,5 +95,5 @@ defineProps({
 });
 
 const userStore = useUserStore();
-const { user } = storeToRefs(userStore)
+const { user } = storeToRefs(userStore);
 </script>
