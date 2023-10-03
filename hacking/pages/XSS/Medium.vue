@@ -3,7 +3,7 @@
         <div class="flex flex-col items-center ">
             <div class="navbar bg-gray-900 text-white flex items-center justify-between p-4 space-x-4">
                 <div class="text-xl">
-                    XSS Hack Page - Easy
+                    XSS Hack Page - Medium
                 </div>
                 <div>
                     <button class="btn" onclick="my_modal_3.showModal()">Level Info</button>
