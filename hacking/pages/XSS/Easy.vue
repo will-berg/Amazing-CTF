@@ -32,7 +32,7 @@
                     <p class="text-sm">Easy Difficulty</p>
                     <p class="py-4">You have discovered a vulnerable web page which allows you to upload diary entries which
                         are rendered.</p>
-                    <p class="py-4">The goal of the hack is to inject and execute the following script into the webpage:
+                    <p class="py-4">The goal of the hack is to inject the following script onto the webpage and execute it using script tags:
                     </p>
                     <p class="py-4 font-bold">alert("You have been hacked!");</p>
                 </div>
