@@ -3,7 +3,7 @@
         <div class="flex flex-col items-center ">
             <div class="navbar bg-gray-900 text-white flex items-center justify-between p-4 space-x-4">
                 <div class="text-xl">
-                    XSS Hack Page - Medium
+                    XSS Hack Page - Easy
                 </div>
                 <div>
                     <button class="btn" onclick="my_modal_3.showModal()">Level Info</button>
@@ -29,11 +29,10 @@
                         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                     </form>
                     <h3 class="font-bold text-lg">Cross Site Scripting - XSS</h3>
-                    <p class="text-sm">Medium Difficulty</p>
-                    <p class="py-4">The owners of the web page you discovered has patched the hack by implementing a sanitizer which
-                        detects script tags in your input and removes them.
-                    </p>
-                    <p class="py-4">The goal this time is to find some way to circumvent the sanitization and execute the following script:
+                    <p class="text-sm">Easy Difficulty</p>
+                    <p class="py-4">You have discovered a vulnerable web page which allows you to upload diary entries which
+                        are rendered.</p>
+                    <p class="py-4">The goal of the hack is to inject and execute the following script into the webpage:
                     </p>
                     <p class="py-4 font-bold">alert("You have been hacked!");</p>
                 </div>
@@ -47,23 +46,15 @@ const postData: Ref<string> = ref("");
 const posts: Ref<string[]> = ref([]);
 const myVar = "</" + "script>"
 
-//should probably make a file for these functions and import them here
 const newPost = (): void => {   
     console.log("postdata: " + postData.value)
     console.log("<script>alert(\"You have been hacked!\");" + myVar)
-    postData.value = sanitizeData(postData.value);
-    postData.value = postData.value.toLowerCase();
-    //should improve the check to only look for containing the different parts to not restrict the user input
-    if (postData.value == "<script>alert(\"you have been hacked!\");"+myVar) {
+    if (postData.value == "<script>alert(\"You have been hacked!\");"+myVar) {
         alert("You have been hacked!");
         postData.value = "";
         //call success function here to get flag
     }
     posts.value.push(postData.value);
     postData.value = "";
-}
-
-const sanitizeData = (data: string): string => {
-    return data.replace(/<script>/g, '').replace(/<\/script>/g, '');
 }
 </script>
