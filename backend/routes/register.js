@@ -3,8 +3,14 @@ const router = express.Router();
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 
-router.post("/", async (req, res) => {
+router.post("/", async (req, res) => {    
     const { email, name, password } = req.body;
+
+    const accountExists = await User.findOne({ email: email });
+    if (accountExists) {
+        return res.status(400).json({ error: "Account with email already exists" });
+    }
+
     if (!email || !password) {
         return res
         .status(400)
