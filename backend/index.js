@@ -38,35 +38,6 @@ app.get(rootPath, (_req, res) => {
 // Routes
 const challenges = require("./routes/challenges");
 app.use(`${rootPath}/challenges`, challenges);
-
-app.get("/test", async (req, res) => {
-  try {
-    const test = await TestModel.find();
-    res.json(test);
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-app.post("/test", async (req, res) => {
-  console.log(req.body)
-  const newName = req.body.name;
-  if (!newName) {
-    return res.status(400).json({ error: 'Name is required' });
-  }
-  console.log(newName);
-  const newTest = new TestModel({
-    name: newName
-  });
-  console.log(newTest)
-  try {
-    const test = await newTest.save();
-    res.json(test);
-  } catch (err) {
-    console.log(err);
-  } 
-});
-
 app.use("/register", registerRoute)
 app.use("/login", loginRoute)
 
