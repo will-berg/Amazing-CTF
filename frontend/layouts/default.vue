@@ -10,4 +10,6 @@
   </div>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+useUserStore().initUserFromLocalStorage();
+</script>

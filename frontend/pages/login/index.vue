@@ -2,13 +2,17 @@
     <div class="flex flex-col gap-4">
         <input placeholder="Email" v-model="user.email" />
         <input placeholder="Password" type="password" v-model="user.password" />
-        <button color="gray" @click="login">
-            Login
-        </button>
+        <button color="gray" @click="login">Login</button>
     </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
+import { User } from "@/types";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+const userStore = useUserStore();
+
 const user = reactive({
     email: "",
     password: "",
@@ -16,22 +20,28 @@ const user = reactive({
 
 const login = async () => {
     try {
-        const res = await $fetch('http://localhost:5000/login', {
-            method: 'POST',
+        const res: any = await $fetch("http://localhost:5000/login", {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json",
             },
-            body: JSON.stringify(
-                {
-                    email: user.email,
-                    password: user.password
-                }
-            )
-        })
-        console.log(res)
-    }catch (e) {
-        console.log(e)
+            body: JSON.stringify({
+                email: user.email,
+                password: user.password,
+            }),
+        });
+        console.log(res);
+        // Add fetched user properties to a user object to be stored and persisted in the store
+        const u: User = {
+            // email: res.user.email,
+            // username: res.user.username,
+            email: "test@example.com",
+            username: "test",
+        };
+        userStore.login(u);
+        router.push("/");
+    } catch (e) {
+        console.log(e);
     }
-}
-
+};
 </script>

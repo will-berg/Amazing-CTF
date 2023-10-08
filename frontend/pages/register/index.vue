@@ -5,13 +5,15 @@
         <input placeholder="Password" type="password" v-model="user.password" />
         <input placeholder="Repeat Password" type="password" v-model="user.repeatPassword" />
 
-        <button color="gray" @click="signUp">
-            Signup
-        </button>
+        <button color="gray" @click="signUp">Signup</button>
     </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
 const user = reactive({
     displayName: "",
     email: "",
@@ -25,22 +27,22 @@ const signUp = async () => {
         return;
     }
     try {
-        const res = await $fetch('http://localhost:5000/register', {
-            method: 'POST',
+        const res = await $fetch("http://localhost:5000/register", {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json",
             },
-            body: JSON.stringify(
-                {
-                    name: user.displayName,
-                    email: user.email,
-                    password: user.password
-                }
-            )
-        })
-        console.log(res)
-    }catch (e) {
-        console.log(e)
+            body: JSON.stringify({
+                name: user.displayName,
+                email: user.email,
+                password: user.password,
+            }),
+        });
+        // If we get here it means the user was successfully created
+        console.log(res);
+        router.push("/login");
+    } catch (e) {
+        console.log(e);
     }
-}
+};
 </script>
