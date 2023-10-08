@@ -6,6 +6,9 @@ const passport = require("passport");
 const jwt = require('jsonwebtoken');
 
 router.post('/', passport.authenticate('local'), (req, res) => {
+    if(!req.user) {
+        return res.status(400).json({ error: "Invalid credentials" });
+    }
     // Generate JWT, remember to change secret key
     const token = jwt.sign({ userId: req.user.id }, 'Mehir123', { expiresIn: '24h' }); 
     res.json({ token, user: req.user });

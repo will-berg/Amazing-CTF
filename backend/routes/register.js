@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 
 router.post("/", async (req, res) => {    
     const { email, name, password } = req.body;
-
+    console.log(email, name, password)
     const accountExists = await User.findOne({ email: email });
     if (accountExists) {
         return res.status(400).json({ error: "Account with email already exists" });
@@ -20,13 +20,16 @@ router.post("/", async (req, res) => {
     const newUser = new User({
         email: email,
         name: name,
-        password: bcrypt.hashSync(password, 10)
+        password: bcrypt.hashSync(password, 10),
+        completedHacks: [],
+        points: 0,
     });
     
     try {
         const user = await newUser.save();
         res.json(user);
     } catch (err) {
+        res.status(500).json({ error: "Server error", details: err.message });
         console.log(err);
     }
 })

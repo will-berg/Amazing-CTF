@@ -19,6 +19,7 @@ export const useUserStore = defineStore({
     actions: {
         login(user: User): void {
             this.user = user;
+            console.log("Logged in as", this.user)
         },
         logout(): void {
             this.user = null;

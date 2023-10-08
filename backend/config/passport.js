@@ -8,8 +8,10 @@ const initPassport = () => {
     new LocalStrategy(
       { usernameField: "email" },
       async (username, password, done) => {
+        console.log(username, password)
         try {
           const user = await User.findOne({ email: username });
+          console.log(user)
           if (!user) {
             return done(null, false, { message: "No user was found" });
           }

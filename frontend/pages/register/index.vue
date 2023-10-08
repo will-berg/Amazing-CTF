@@ -1,18 +1,36 @@
 <template>
-    <div class="flex flex-col gap-4">
-        <input placeholder="Name" v-model="user.displayName" />
-        <input placeholder="you@example.com" v-model="user.email" />
-        <input placeholder="Password" type="password" v-model="user.password" />
-        <input placeholder="Repeat Password" type="password" v-model="user.repeatPassword" />
+    <div class="flex flex-col gap-4 py-5 items-center justify-center">
+        <h2>Create your account!</h2>
+        <div class="form-control w-full border solid">
+            <label class="label">
+                <span class="label-text">Name:</span>
+            </label>
+            <input type="text" placeholder="Name" class="input input-bordered w-full max-w-xs" v-model="user.displayName" />
+            <label class="label">
+                <span class="label-text">Email:</span>
+            </label>
+            <input type="text" placeholder="Enter email" class="input input-bordered w-full max-w-xs"
+                v-model="user.email" />
+            <label class="label">
+                <span class="label-text">Password:</span>
+            </label>
+            <input type="text" placeholder="Password" class="input input-bordered w-full max-w-xs"
+                v-model="user.password" />
+            <label class="label">
+                <span class="label-text">Repeat password:</span>
+            </label>
+            <input type="text" placeholder="Repeat password" class="input input-bordered w-full max-w-xs"
+                v-model="user.repeatPassword" />
+            <button class="btn btn-outline" @click="signUp">
+                Signup
+            </button>
+        </div>
 
-        <button color="gray" @click="signUp">
-            Signup
-        </button>
     </div>
 </template>
 
 <script setup>
-const user = reactive({
+const user = ref({
     displayName: "",
     email: "",
     password: "",
@@ -25,22 +43,22 @@ const signUp = async () => {
         return;
     }
     try {
-        const res = await $fetch('http://localhost:5000/register', {
+        const res = await fetch('http://localhost:5000/register', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify(
                 {
-                    name: user.displayName,
-                    email: user.email,
-                    password: user.password
+                    name: user.value.displayName,
+                    email: user.value.email,
+                    password: user.value.password
                 }
             )
         })
-        console.log(res)
-    }catch (e) {
-        console.log(e)
+        console.log("response: " + res)
+    } catch (e) {
+        console.log("err: " + e)
     }
 }
 </script>

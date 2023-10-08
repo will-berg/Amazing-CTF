@@ -5,7 +5,6 @@ const app = express();
 const port = 5000;
 const rootPath = "/api";
 const db = require("./config/db");
-const TestModel = require("./models/testSchema");
 const registerRoute = require("./routes/register");
 const loginRoute = require("./routes/login");
 const cors = require("cors");
@@ -26,7 +25,6 @@ require('./config/passport')(passport);
 const corsOptions = {
   origin: "http://localhost:3000",
   credentials: true,
-  
 };
 app.use(cors(corsOptions));
 
