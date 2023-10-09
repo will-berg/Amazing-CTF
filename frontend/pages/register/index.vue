@@ -1,36 +1,60 @@
 <template>
-    <div class="flex flex-col gap-4 py-5 items-center justify-center">
-        <h2>Create your account!</h2>
-        <div class="form-control w-full border solid">
-            <label class="label">
-                <span class="label-text">Name:</span>
-            </label>
-            <input type="text" placeholder="Name" class="input input-bordered w-full max-w-xs" v-model="user.displayName" />
-            <label class="label">
-                <span class="label-text">Email:</span>
-            </label>
-            <input type="text" placeholder="Enter email" class="input input-bordered w-full max-w-xs"
-                v-model="user.email" />
-            <label class="label">
-                <span class="label-text">Password:</span>
-            </label>
-            <input type="text" placeholder="Password" class="input input-bordered w-full max-w-xs"
-                v-model="user.password" />
-            <label class="label">
-                <span class="label-text">Repeat password:</span>
-            </label>
-            <input type="text" placeholder="Repeat password" class="input input-bordered w-full max-w-xs"
-                v-model="user.repeatPassword" />
-            <button class="btn btn-outline" @click="signUp">
-                Signup
-            </button>
-        </div>
+    <div class="flex flex-col gap-3 items-center">
+        <h3>Create Account</h3>
+        <Icon name="simple-icons:cyberdefenders" size="32" />
+        <input
+            placeholder="Name"
+            v-model="user.displayName"
+            class="input input-bordered w-full max-w-xs"
+        />
+        <input
+            placeholder="Email"
+            v-model="user.email"
+            class="input input-bordered w-full max-w-xs"
+        />
+        <input
+            placeholder="Password"
+            type="password"
+            v-model="user.password"
+            class="input input-bordered w-full max-w-xs"
+        />
+        <input
+            placeholder="Repeat Password"
+            type="password"
+            v-model="user.repeatPassword"
+            class="input input-bordered w-full max-w-xs"
+        />
 
+        <button color="gray" @click="signUp" class="btn btn-primary w-full max-w-xs">
+            sign up
+        </button>
+        <p>
+            Already have an account?
+            <NuxtLink to="/login" class="text-primary font-bold">Login</NuxtLink>
+        </p>
     </div>
 </template>
 
-<script setup>
-const user = ref({
+<script lang="ts" setup>
+import { useRouter } from "vue-router";
+const { register, errorRegister } = useAuth();
+
+const router = useRouter();
+
+const signUp = async () => {
+    if (user.password !== user.repeatPassword) {
+        alert("Passwords do not match");
+        return;
+    }
+    try {
+        await register(user.email, user.password, user.displayName);
+        console.log(errorRegister.value)
+        router.push("/login");
+    } catch (e) {
+        console.log(e);
+    }
+};
+const user = reactive({
     displayName: "",
     email: "",
     password: "",
@@ -46,22 +70,22 @@ const user = ref({
         return;
     }
     try {
-        const res = await fetch('http://localhost:5000/register', {
-            method: 'POST',
+        const res = await $fetch("http://localhost:5000/register", {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
             },
-            body: JSON.stringify(
-                {
-                    name: user.value.displayName,
-                    email: user.value.email,
-                    password: user.value.password
-                }
-            )
-        })
-        console.log("response: " + res)
+            body: JSON.stringify({
+                name: user.displayName,
+                email: user.email,
+                password: user.password,
+            }),
+        });
+        // If we get here it means the user was successfully created
+        console.log(res);
+        router.push("/login");
     } catch (e) {
-        console.log("err: " + e)
+        console.log(e);
     }
-} */
+};*/
 </script>
