@@ -24,7 +24,9 @@
             v-model="user.repeatPassword"
             class="input input-bordered w-full max-w-xs"
         />
-
+        <div v-if="errorRegister" class="text-red-500">
+            {{ errorRegister }}
+        </div>
         <button color="gray" @click="signUp" class="btn btn-primary w-full max-w-xs">
             sign up
         </button>
@@ -41,25 +43,26 @@ const { register, errorRegister } = useAuth();
 
 const router = useRouter();
 
-const signUp = async () => {
-    if (user.password !== user.repeatPassword) {
-        alert("Passwords do not match");
-        return;
-    }
-    try {
-        await register(user.email, user.password, user.displayName);
-        console.log(errorRegister.value)
-        router.push("/login");
-    } catch (e) {
-        console.log(e);
-    }
-};
-const user = reactive({
+const user = ref({
     displayName: "",
     email: "",
     password: "",
     repeatPassword: "",
 });
+
+const signUp = async () => {
+    try {
+        await register(user.value.email, user.value.displayName, user.value.password, user.value.repeatPassword);
+        console.log("in try: " + errorRegister.value)
+        if(errorRegister.value === null) {
+            router.push("/login");
+        }
+    } catch (e) {
+        console.log("in catch: " + errorRegister.value)
+        console.log(e);
+    }
+};
+
 
 
 

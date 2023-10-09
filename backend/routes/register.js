@@ -4,18 +4,36 @@ const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 
 router.post("/", async (req, res) => {
-  const { email, name, password } = req.body;
-  console.log(email, name, password);
+  const { email, name, password, repeatPassword } = req.body;
+  console.log(email, name, password, repeatPassword);
 
-  if (!email || !password) {
+  if (!email || !password || !name || !repeatPassword) {
+    console.log("All fields required")
     return res
       .status(400)
-      .send({ message: "Username and password are required" });
+      .send({ message: "All fields are required" });
   }
+
+  if(password !== repeatPassword) {
+    console.log("passwords do not match")
+    return res
+      .status(400)
+      .send({ message: "Passwords do not match" });
+  }
+
+  if(password.length < 6) {
+    console.log("password must be at least 6 characters")
+    return res
+      .status(400)
+      .send({ message: "Password must be at least 6 characters" });
+  }
+
   try {
     const accountEmailExists = await User.findOne({ email: email });
     const accountNameExists = await User.findOne({ name: name });
+    console.log("email and name exists value: " + accountEmailExists, accountNameExists)
     if (accountEmailExists || accountNameExists) {
+        console.log("account already exists")
       return res.status(400).send({ message: "Account already exists" });
     }
 

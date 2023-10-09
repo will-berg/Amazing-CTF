@@ -3,15 +3,30 @@ const router = express.Router();
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
-router.post('/', passport.authenticate('local'), (req, res) => {
-    if(!req.user) {
-        return res.status(400).json({ error: "Invalid credentials" });
+router.post("/", (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) {
+      return res
+        .status(500)
+        .json({ error: "An error occurred during authentication." });
     }
-    // Generate JWT, remember to change secret key
-    const token = jwt.sign({ userId: req.user.id }, 'Mehir123', { expiresIn: '24h' }); 
-    res.json({ token, user: req.user });
-});
 
+    if (!user) {
+      return res.status(400).json({ error: info.message });
+    }
+
+    req.login(user, (err) => {
+      if (err) {
+        return res.status(500).json({ error: "Failed to log in user." });
+      }
+
+      const token = jwt.sign({ userId: user.id }, "Mehir123", {
+        expiresIn: "24h",
+      });
+      return res.json({ token, user });
+    });
+  })(req, res, next);
+});
 module.exports = router;
