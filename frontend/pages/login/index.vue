@@ -14,6 +14,10 @@
             class="input input-bordered w-full max-w-xs"
         />
 
+        <div v-if="errorLogin" class="text-red-500">
+            {{ errorLogin }}
+        </div>
+
         <button color="gray" @click="onSubmit" class="btn btn-primary w-full max-w-xs">
             Login
         </button>
@@ -30,7 +34,7 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 const userStore = useUserStore();
-const { login }  = useAuth();
+const { login, errorLogin }  = useAuth();
 
 const user = ref({
     email: "",
@@ -41,6 +45,17 @@ const onSubmit = async () => {
     try {
         const res = await login(user.value.email, user.value.password);
         console.log(res);
+        if(errorLogin.value === null) {
+            const u: User = {
+                email: res.user.email,
+                username: res.user.name,
+                points: res.user.points,
+                completedHacks: res.user.completedHacks,
+                token: res.token,
+            };
+            userStore.login(u);
+            router.push("/");
+        }
     } catch (e) {
         console.log(e);
     }

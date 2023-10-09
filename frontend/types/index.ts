@@ -14,6 +14,8 @@ export interface HackDetails {
 export interface User {
 	email: string;
 	username: string;
+    points: number;
+    completedHacks: string[];
     token?: string;
 }
 

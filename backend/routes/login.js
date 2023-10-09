@@ -2,31 +2,32 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
-const passport = require("passport");
 const jwt = require("jsonwebtoken");
 
-router.post("/", (req, res, next) => {
-  passport.authenticate("local", (err, user, info) => {
-    if (err) {
-      return res
-        .status(500)
-        .json({ error: "An error occurred during authentication." });
+router.post("/", async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    if(!email || !password) {
+      return res.status(400).json({ error: "All fields required" });
     }
-
+    const user = await User.findOne({ email: email });
     if (!user) {
-      return res.status(400).json({ error: info.message });
+      return res.status(400).json({ error: "User not found" });
     }
-
-    req.login(user, (err) => {
-      if (err) {
-        return res.status(500).json({ error: "Failed to log in user." });
-      }
-
-      const token = jwt.sign({ userId: user.id }, "Mehir123", {
-        expiresIn: "24h",
-      });
-      return res.json({ token, user });
+    //compare password
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) {
+      return res.status(400).json({ error: "Incorrect password" });
+    }
+    const token = jwt.sign({ userId: user.id }, "Mehir123", {
+      expiresIn: "24h",
     });
-  })(req, res, next);
+    return res.json({ token: token, user: user });
+  } catch (err) {
+    res.status(500).json({ error: "Something went wrong", err: err });
+  }
 });
+
 module.exports = router;
+
+
