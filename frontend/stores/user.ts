@@ -27,6 +27,7 @@ export const useUserStore = defineStore({
         },
         login(user: User): void {
             this.user = user;
+            console.log("Logged in as", this.user)
 			// Save user state to local storage
 			if (process.client) {
 				localStorage.setItem("user", JSON.stringify(user));

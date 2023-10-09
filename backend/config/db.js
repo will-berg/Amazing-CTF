@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const db = async () => {
   try {
     await mongoose.connect(
-      "mongodb://root:test@database:27017/amazing-ctf?authSource=admin",
+      "mongodb://127.0.0.1:27017/amazing-ctf",
       { useNewUrlParser: true, useUnifiedTopology: true }
     );
     console.log("Connected to MongoDB");

@@ -24,7 +24,9 @@
             v-model="user.repeatPassword"
             class="input input-bordered w-full max-w-xs"
         />
-
+        <div v-if="errorRegister" class="text-red-500">
+            {{ errorRegister }}
+        </div>
         <button color="gray" @click="signUp" class="btn btn-primary w-full max-w-xs">
             sign up
         </button>
@@ -37,10 +39,11 @@
 
 <script lang="ts" setup>
 import { useRouter } from "vue-router";
+const { register, errorRegister } = useAuth();
 
 const router = useRouter();
 
-const user = reactive({
+const user = ref({
     displayName: "",
     email: "",
     password: "",
@@ -48,6 +51,23 @@ const user = reactive({
 });
 
 const signUp = async () => {
+    try {
+        await register(user.value.email, user.value.displayName, user.value.password, user.value.repeatPassword);
+        console.log("in try: " + errorRegister.value)
+        if(errorRegister.value === null) {
+            router.push("/login");
+        }
+    } catch (e) {
+        console.log("in catch: " + errorRegister.value)
+        console.log(e);
+    }
+};
+
+
+
+
+
+/* const signUp = async () => {
     if (user.password !== user.repeatPassword) {
         alert("Passwords do not match");
         return;
@@ -70,5 +90,5 @@ const signUp = async () => {
     } catch (e) {
         console.log(e);
     }
-};
+};*/
 </script>
