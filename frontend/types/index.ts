@@ -10,6 +10,7 @@ export interface HackDetails {
     imageUrl: string;
 }
 
+// Add more properties to the User interface as needed, e.g. points 
 export interface User {
 	email: string;
 	username: string;
