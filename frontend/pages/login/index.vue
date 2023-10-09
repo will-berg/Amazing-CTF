@@ -18,7 +18,7 @@ const user = ref({
 
 const onSubmit = async () => {
     try {
-        await login({email: user.value.email, password: user.value.password});
+        const {userObj, token} = await login(user.value.email, user.value.password);
     } catch (e) {
         console.log(e);
     }

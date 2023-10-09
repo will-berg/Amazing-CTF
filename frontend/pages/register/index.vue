@@ -37,7 +37,10 @@ const user = ref({
     repeatPassword: "",
 });
 
-const signUp = async () => {
+
+
+
+/* const signUp = async () => {
     if (user.password !== user.repeatPassword) {
         alert("Passwords do not match");
         return;
@@ -60,5 +63,5 @@ const signUp = async () => {
     } catch (e) {
         console.log("err: " + e)
     }
-}
+} */
 </script>
