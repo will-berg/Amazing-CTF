@@ -13,6 +13,14 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  completedHacks: {
+    type: Array,
+    required: true,
+  },
+  points: {
+    type: Number,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("users", userSchema);
