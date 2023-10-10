@@ -2,7 +2,7 @@
     <div class="py-10 md:px-14 px-4">
         <div class="grid items-center md:grid-cols-2 grid-cols-1 grid-rows-1">
             <div class="md:row-start-1 md:row-end-2 md:col-start-1 md:col-end-1">
-                <h1>Welcome to AmazingCTF!</h1>
+                <h1 id="title">Welcome to AmazingCTF!</h1>
                 <h2 class="py-4">
                     The best place to sharpen your practical skills in cybersecurity
                 </h2>
@@ -218,6 +218,6 @@
 
 #hacker-body {
     animation: bob 3s infinite alternate;
-    filter: drop-shadow(1rem 1rem 2rem rgb(17, 17, 17));
+    filter: drop-shadow(1.5rem 1rem 1rem rgb(17, 17, 17));
 }
 </style>

@@ -3,7 +3,7 @@ const favicon = require("serve-favicon");
 const path = require("path");
 const cors = require("cors");
 
-const db = require("./db/db");
+const db = require("./config/db");
 
 // Create express app
 const app = express();
@@ -22,7 +22,6 @@ app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
 // Cors setup to allow for calls from frontend
 const corsOptions = {
   origin: "http://localhost:3000",
-  credentials: true,
 };
 app.use(cors(corsOptions));
 
@@ -37,8 +36,10 @@ app.use(`${rootPath}/challenges`, challenges);
 
 const registerRoute = require("./routes/register");
 const loginRoute = require("./routes/login");
+const submitFlagRoute = require("./routes/submitflag");
 app.use("/register", registerRoute);
 app.use("/login", loginRoute);
+app.use("/submitflag", submitFlagRoute);
 
 app.listen(port, () => {
   console.log(`Connected successfully on port ${port}`);

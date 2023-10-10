@@ -6,6 +6,7 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@nuxt/image',
 	'@pinia/nuxt',
+	'@pinia-plugin-persistedstate/nuxt',
 	'nuxt-icon'
   ],
   // Auto import from stores directory
