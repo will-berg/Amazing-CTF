@@ -17,14 +17,15 @@ services:
 
   database:
     image: 'mongo'
+    container_name: database
+    restart: always
     environment: 
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=test
     ports:
       - "7017:27017"
     volumes:
-      - ./backend/files:/app/backend/files
-    #  - ./mongodb_data:/data/db
+      - ./database:/data/db
 
   backend:
     depends_on:

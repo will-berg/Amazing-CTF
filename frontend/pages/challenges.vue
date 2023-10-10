@@ -31,7 +31,7 @@
  import { ref } from 'vue';
  import { HackDetails } from '~/types';
 
- const {data: hacks, error, pending} = await useFetch<HackDetails[]>('http://localhost:5000/api/challenges')
+ const {data: hacks, error, pending} = await useFetch<HackDetails[]>('http://localhost:5000/challenges')
  const selectedHack = ref<HackDetails | null>(null);
 
 const openModal = (hack: HackDetails) => {
