@@ -32,14 +32,14 @@ app.get(rootPath, (_req, res) => {
 
 // Routes
 const challenges = require("./routes/challenges");
-app.use(`${rootPath}/challenges`, challenges);
-
 const registerRoute = require("./routes/register");
 const loginRoute = require("./routes/login");
 const submitFlagRoute = require("./routes/submitflag");
-app.use("/register", registerRoute);
-app.use("/login", loginRoute);
-app.use("/submitflag", submitFlagRoute);
+
+app.use(`${rootPath}/challenges`, challenges);
+app.use(`${rootPath}/register`, registerRoute);
+app.use(`${rootPath}/login`, loginRoute);
+app.use(`${rootPath}/submitflag`, submitFlagRoute);
 
 app.listen(port, () => {
   console.log(`Connected successfully on port ${port}`);
