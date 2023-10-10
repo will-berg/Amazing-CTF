@@ -37,8 +37,8 @@ app.use(`${rootPath}/challenges`, challenges);
 
 const registerRoute = require("./routes/register");
 const loginRoute = require("./routes/login");
-app.use("/register", registerRoute)
-app.use("/login", loginRoute)
+app.use("/register", registerRoute);
+app.use("/login", loginRoute);
 
 app.listen(port, () => {
   console.log(`Connected successfully on port ${port}`);

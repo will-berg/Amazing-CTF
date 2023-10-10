@@ -42,17 +42,16 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage }).single("image");
 
-// GET all challenges
-router.get("/", async (_req, res) => {
-  const challenges = await Challenge.find({}).exec();
-  res.send(challenges);
-});
-
-// GET a single challenge
-router.get("/:id", async (req, res) => {
+async function _get_challenge(id) {
+  return await Challenge.findById(id).exec();
+}
+async function _delete_challenge(id) {
+  return await Challenge.findByIdAndDelete(id).exec();
+}
+async function get_challenge(req, res, searchFunc = _get_challenge) {
   let challenge = null;
   try {
-    challenge = await Challenge.findById(req.params.id).exec();
+    challenge = await searchFunc(req.params.id);
   } catch (err) {
     if (err.name !== "CastError") {
       console.error(err);
@@ -64,6 +63,20 @@ router.get("/:id", async (req, res) => {
     return res
       .status(404)
       .send("The challenge with the given ID was not found");
+
+  return challenge;
+}
+
+// GET all challenges
+router.get("/", async (_req, res) => {
+  const challenges = await Challenge.find({}).exec();
+  res.send(challenges);
+});
+
+// GET a single challenge
+router.get("/:id", async (req, res) => {
+  let challenge = await get_challenge(req, res);
+  if (!challenge) return;
 
   res.send(challenge);
 });
@@ -125,21 +138,8 @@ router.post("/", async (req, res) => {
 
 // DELETE a challenge
 router.delete("/:id", async (req, res) => {
-  let challenge = null;
-  // Remove the challenge from the database
-  try {
-    challenge = await Challenge.findByIdAndDelete(req.params.id).exec();
-  } catch (err) {
-    if (err.name !== "CastError") {
-      console.error(err);
-      return res.status(500).send("Failed to interact with the database");
-    }
-  }
-
-  if (!challenge)
-    return res
-      .status(404)
-      .send("The challenge with the given ID was not found");
+  let challenge = await get_challenge(req, res, _delete_challenge);
+  if (!challenge) return;
 
   // Delete the image
   filePath = path.join(filePathImages, challenge.image);
@@ -162,21 +162,8 @@ router.put("/:id", async (req, res) => {
     }
 
     // Find the challenge
-    let challenge = null;
-    try {
-      challenge = await Challenge.findById(req.params.id).exec();
-    } catch (err) {
-      if (err.name !== "CastError") {
-        console.error(err);
-        return res.status(500).send("Failed to interact with the database");
-      }
-    }
-
-    // Ensure that the challenge exists
-    if (!challenge)
-      return res
-        .status(404)
-        .send("The challenge with the given ID was not found");
+    let challenge = await get_challenge(req, res);
+    if (!challenge) return;
 
     // Validate that at least one field is being updated
     if (
@@ -216,7 +203,7 @@ router.put("/:id", async (req, res) => {
 
     // Save the challenge the updated challenge
     try {
-      await challenge.save();
+      await Challenge.findByIdAndUpdate(req.params.id, challenge).exec();
     } catch (err) {
       console.error(err);
       return handle_post_error(500, "Failed to save the challenge", req, res);
@@ -227,20 +214,8 @@ router.put("/:id", async (req, res) => {
 });
 // GET the image of a challenge with the given ID
 router.get("/:id/image", async (req, res) => {
-  let challenge = null;
-  try {
-    challenge = await Challenge.findById(req.params.id).exec();
-  } catch (err) {
-    if (err.name !== "CastError") {
-      console.error(err);
-      return res.status(500).send("Failed to interact with the database");
-    }
-  }
-
-  if (!challenge)
-    return res
-      .status(404)
-      .send("The challenge with the given ID was not found");
+  let challenge = await get_challenge(req, res);
+  if (!challenge) return;
 
   res.sendFile(path.join(filePathImages, challenge.image));
 });
@@ -254,4 +229,5 @@ router.get("/image/:name", async (req, res) => {
 
   res.sendFile(filePath);
 });
+
 module.exports = router;
