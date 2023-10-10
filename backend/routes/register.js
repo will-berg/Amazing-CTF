@@ -14,6 +14,15 @@ router.post("/", async (req, res) => {
       .send({ message: "All fields are required" });
   }
 
+  //check if email is correct format
+  const emailRegex = /\S+@\S+\.\S+/;
+  if(!emailRegex.test(email)) {
+    console.log("email is not valid")
+    return res
+      .status(400)
+      .send({ message: "Please enter email in a valid format" });
+  }
+
   if(password !== repeatPassword) {
     console.log("passwords do not match")
     return res
