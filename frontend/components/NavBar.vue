@@ -24,7 +24,7 @@
         </div>
         <!-- Hamburger menu with navbar links for smaller screens -->
         <div class="dropdown dropdown-end sm:hidden">
-            <label tabindex="0" class="btn btn-ghost btn-circle">
+            <label tabindex="0" class="btn btn-ghost btn-circle text-white">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
