@@ -45,7 +45,7 @@
                 tabindex="0"
                 class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
             >
-                <li><NuxtLink to="/hacking">Challenges</NuxtLink></li>
+                <li><NuxtLink to="/challenges">Challenges</NuxtLink></li>
                 <li><NuxtLink to="/leaderboard">Leaderboards</NuxtLink></li>
             </ul>
         </div>

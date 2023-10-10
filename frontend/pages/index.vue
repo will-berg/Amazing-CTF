@@ -171,7 +171,9 @@
     </div>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+
+</script>
 
 <style>
 /* Keyframe to transition through all the colors */

@@ -8,11 +8,14 @@ export interface HackDetails {
     title: string;
     description: string;
     imageUrl: string;
+    points: number;
 }
 
 export interface User {
 	email: string;
 	username: string;
+    completedHacks: string;
+    points: number;
 }
 
 export interface UserLeaderboard {

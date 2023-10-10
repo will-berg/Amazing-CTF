@@ -8,6 +8,7 @@ const db = require("./db/db");
 const TestModel = require("./models/testSchema");
 const registerRoute = require("./routes/register");
 const loginRoute = require("./routes/login");
+const profileRoute = require("./routes/profile");
 const cors = require("cors");
 db();
 
@@ -63,6 +64,7 @@ app.post("/test", async (req, res) => {
 
 app.use("/register", registerRoute)
 app.use("/login", loginRoute)
+app.use("/profile", profileRoute)
 
 app.listen(port, () => {
   console.log(`Connected successfully on port ${port}`);

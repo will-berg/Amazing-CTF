@@ -1,30 +1,38 @@
 <template>
-    <div v-if="hack" class="max-w-sm rounded overflow-hidden shadow-lg flex flex-col h-full">
-      <NuxtImg
-        class="bg-white"
-        width="256"
-        height="150"
-        :src="hack.imageUrl"
-        :preload="true"
-      />
-      <div class="px-6 py-4 flex-grow">
-        <div class="font-bold text-xl mb-2">{{ hack.title }}</div>
-        <p class="text-gray-700 text-base flex-grow">
-          {{ hack.description }}
-        </p>
+  <div v-if="hack" class="card w-64 h-[20rem] bg-base-100 shadow-xl">
+    <figure class="relative">
+  <NuxtImg
+    v-if="hack.imageUrl"
+    class="bg-white h-3/5"
+    width="100%"
+    :src="hack.imageUrl"
+  />
+  <div class="absolute inset-0 border-4 border-green-300 animate-pulse"></div>
+</figure>
+    <div class="card-body flex flex-col justify-between">
+      <div>
+        <h2 class="card-title">{{ hack.title }}</h2>
       </div>
-      <div class="flex justify-center items-end p-4">
-        <NuxtLink :to="'hackInfo/' + hack.name">
-            <button class="btn btn-info hover:bg-blue-600 transition-bg ease-in-out duration-200">Select</button>
-        </NuxtLink>
+      <div class="card-actions flex justify-center items-center h-16">
+        <button class="btn" @click="$emit('selectedHack', hack)">Read More</button>
+      </div>
     </div>
-    </div>
-  </template>
+  </div>
+</template>
+
+
+
 
 <script lang="ts" setup>
-import type { HackDetails } from "@/types";
+import { HackDetails } from "@/types";
 
-const props = defineProps<{
+defineProps<{
   hack: HackDetails | null;
 }>();
+
+defineEmits<{
+  selectedHack: (hack: HackDetails) => void; 
+}>();
+
+
 </script>

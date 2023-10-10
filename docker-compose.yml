@@ -47,3 +47,4 @@ services:
 volumes:
   mongodb_data:
   # TODO: Decide the database and link it to the backend
+  

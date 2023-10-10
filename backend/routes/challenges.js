@@ -1,53 +1,116 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const sharp = require('sharp')
 
 const router = express.Router();
 const filePath = path.join(__dirname, '../images/challenges');
 
 // Temporary data
+// const challenges = [
+//     {
+//         id: 1,
+//         title: 'Challenge 1',
+//         description: 'This is the first challenge',
+//         image: 'challenge1.png',
+//         points: 100
+//     },
+//     {
+//         id: 2,
+//         title: 'Challenge 2',
+//         description: 'This is the second challenge',
+//         image: 'challenge1.png',
+//         points: 200
+//     },
+//     {
+//         id: 3,
+//         title: 'Challenge 3',
+//         description: 'This is the third challenge',
+//         image: 'challenge1.png',
+//         points: 300
+//     }
+// ];
+
 const challenges = [
     {
         id: 1,
-        title: 'Challenge 1',
-        description: 'This is the first challenge',
-        image: 'challenge1.png',
-        points: 100
+        title: 'ReDos',
+        description: 'Regular Expression Denial of Service (ReDos)...Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
+        imageUrl: '/images/regex.png',
+        points: 100,
     },
     {
         id: 2,
-        title: 'Challenge 2',
-        description: 'This is the second challenge',
-        image: 'challenge1.png',
-        points: 200
+        title: 'SQLInjection',
+        description: 'Regular Expression Denial of Service (ReDos)...Lorem Ipsum is simply dummy text o standard dummy text ever since the 1500s, when an unknown printer',
+        imageUrl: '/images/injection.png',
+        point: 200,
     },
     {
         id: 3,
-        title: 'Challenge 3',
-        description: 'This is the third challenge',
-        image: 'challenge1.png',
-        points: 300
-    }
+        title: 'Deserialization',
+        description: 'Regular Expression Denial of Service (ReDos)...Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printert to make a type specimen book.',
+        imageUrl: '/images/serialize.png',
+        points: 150,
+    },
+    {
+        id: 4,
+        title: 'XSS',
+        description: 'Regular Expression Denial of Service (ReDos)...',
+        imageUrl: '/images/xss.png',
+        points: 100,
+    },
+    {
+        id: 5,
+        title: 'Prototype Pollution',
+        description: 'Regular Expression Denial of Service (ReDos)...Lorem Ipsum is simply dummy text of the printi',
+        imageUrl: '/images/pollution.png',
+        points: 100,
+    },
+    {
+        id: 5,
+        title: 'Something',
+        description: 'Regular Expression Denial of Service (ReDos)...Lorem Ipsum is simply dummy text of the printi',
+        imageUrl: '/images/injection.png',
+        points: 100,
+    },
 ];
 let nextId = 4;
 
-// GET all challenges
+//GET all challenges
+// router.get('/', (_req, res) => {
+//     // Load images
+//     const challengesWithImages = challenges.map(c => {
+//         const imagePath = path.join(filePath, c.image);
+//         const image = fs.readFileSync(imagePath, 'base64');
+//         return {
+//             id: c.id,
+//             title: c.title,
+//             description: c.description,
+//             image: image,
+//             points: c.points
+//         };
+//     });
+
+//     res.send(challengesWithImages);
+// });
+
+//GET all challenges
 router.get('/', (_req, res) => {
     // Load images
     const challengesWithImages = challenges.map(c => {
-        const imagePath = path.join(filePath, c.image);
-        const image = fs.readFileSync(imagePath, 'base64');
         return {
             id: c.id,
             title: c.title,
             description: c.description,
-            image: image,
+            imageUrl: c.imageUrl,
             points: c.points
         };
     });
 
     res.send(challengesWithImages);
 });
+
 
 // GET a single challenge
 router.get('/:id', (req, res) => {
