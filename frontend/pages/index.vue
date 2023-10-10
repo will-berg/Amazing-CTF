@@ -6,8 +6,58 @@
                 <h2 class="py-4">
                     The best place to sharpen your practical skills in cybersecurity
                 </h2>
-                <!-- Have this link to some docs that explain how to get started -->
-                <NuxtLink to="/" class="btn rounded-full btn-primary">Get Started</NuxtLink>
+                <button class="btn rounded-full btn-primary" onclick="my_modal.showModal()">
+                    get started
+                </button>
+                <dialog id="my_modal" class="modal">
+                    <div class="modal-box">
+                        <form method="dialog">
+                            <button
+                                class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+                            >
+                                ✕
+                            </button>
+                        </form>
+                        <h3 class="font-bold text-lg">Get Started</h3>
+                        <p>
+                            Welcome to the AmazingCTF website! Learn about cybersecurity and
+                            test your skills in a safe environment.
+                        </p>
+                        <p>Getting started is easy, just follow the steps below:</p>
+                        <br />
+                        <ol>
+                            <li>
+                                1.
+                                <NuxtLink to="register" class="text-primary hover:underline"
+                                    >Create</NuxtLink
+                                >
+                                an account.
+                            </li>
+                            <li>
+                                2.
+                                <NuxtLink to="login" class="text-primary hover:underline"
+                                    >Login</NuxtLink
+                                >
+                                to your account.
+                            </li>
+                            <li>
+                                3. Go to the
+                                <NuxtLink to="hacking" class="text-primary hover:underline"
+                                    >challenges page</NuxtLink
+                                >.
+                            </li>
+                            <li>
+                                4. Select a challenge that seems interesting by clicking
+                                "start".
+                            </li>
+                            <li>5. Solve the challenge to receive a reward.</li>
+                            <li>6. Move on to the next challenge!</li>
+                        </ol>
+                        <br />
+                        <p>Good luck!</p>
+                    </div>
+                </dialog>
+
                 <NuxtLink to="/about" class="btn rounded-full btn-secondary mx-2"
                     >About Us</NuxtLink
                 >
