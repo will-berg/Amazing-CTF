@@ -5,7 +5,7 @@ const multer = require("multer");
 const Challenge = require("../models/challengeModel");
 
 const router = express.Router();
-const filePathImages = path.join(__dirname, "../files/challenges/images");
+const filePathImages = path.join(__dirname, "../../data/challenges/images");
 
 //  Based on: https://image.nuxt.com/usage/nuxt-picture
 const suportedImageTypes = [
@@ -51,7 +51,7 @@ async function _delete_challenge(id) {
   return await Challenge.findByIdAndDelete(id).exec();
 }
 async function get_challenge(req, res, searchFunc = _get_challenge) {
-  let challenge = undefined;
+  let challenge = null;
   try {
     challenge = await searchFunc(req.params.id);
   } catch (err) {
@@ -88,12 +88,14 @@ function handle_post_error(errCode, errMsg, req, res) {
   // Delete the image
   if (req.file?.filename !== undefined) {
     filePath = path.join(filePathImages, req.file.filename);
-    fs.unlink(filePath, (err) => {
-      if (err) {
-        console.error(err);
-        errMsg += "\nFailed to delete the image";
-      }
-    });
+    if (fs.existsSync(filePath)) {
+      fs.unlink(filePath, (err) => {
+        if (err) {
+          console.error(err);
+          errMsg += "\nFailed to delete the image";
+        }
+      });
+    }
   }
   res.status(errCode).send(errMsg);
 }
@@ -110,12 +112,14 @@ router.post("/", async (req, res) => {
     if (
       req.body.title === undefined ||
       req.body.description === undefined ||
+      req.body.informationPage === undefined ||
       req.body.points === undefined ||
+      req.body.url === undefined ||
       req.file?.filename === undefined
     )
       return handle_post_error(
         400,
-        "Missing required fields, it should contain: title, description, points and image",
+        "Missing required fields, it should contain: title, description, informationPage, points, url and image",
         req,
         res
       );
@@ -123,8 +127,10 @@ router.post("/", async (req, res) => {
     const challenge = new Challenge({
       title: req.body.title,
       description: req.body.description,
-      image: req.file.filename,
+      informationPage: req.body.informationPage,
       points: req.body.points,
+      url: req.body.url,
+      image: req.file.filename,
     });
 
     // Save the challenge
@@ -155,12 +161,14 @@ router.put("/:id", async (req, res) => {
     if (
       req.body.title === undefined &&
       req.body.description === undefined &&
+      req.body.informationPage === undefined &&
       req.body.points === undefined &&
+      req.body.url === undefined &&
       req.file?.filename === undefined
     )
       return handle_post_error(
         400,
-        "Missing required fields, it should contain at least: title, description, points and image",
+        "Missing required fields, it should contain at least one of: title, description, informationPage, points, url and image",
         req,
         res
       );
@@ -168,28 +176,34 @@ router.put("/:id", async (req, res) => {
     // Check if the image is being updated and remove the old one
     if (req.image?.filename !== undefined) {
       filePath = path.join(filePathImages, challenge.image);
-      fs.unlink(filePath, (err) => {
-        if (err) {
-          console.error(err);
-          return handle_post_error(
-            500,
-            "Failed to delete the old image",
-            req,
-            res
-          );
-        }
-      });
+      if (fs.existsSync(filePath)) {
+        fs.unlink(filePath, (err) => {
+          if (err) {
+            console.error(err);
+            return handle_post_error(
+              500,
+              "Failed to delete the old image",
+              req,
+              res
+            );
+          }
+        });
+      }
     }
 
     // Update the challenge fields
     challenge.title = req.body.title || challenge.title;
     challenge.description = req.body.description || challenge.description;
+    challenge.informationPage =
+      req.body.informationPage || challenge.informationPage;
     challenge.points = req.body.points || challenge.points;
+    challenge.url = req.body.url || challenge.url;
     challenge.image = req.file?.filename || challenge.image;
 
     // Save the challenge the updated challenge
     try {
-      await Challenge.findByIdAndUpdate(req.params.id, challenge).exec();
+      // await Challenge.findByIdAndUpdate(req.params.id, challenge).exec();
+      await challenge.save();
     } catch (err) {
       console.error(err);
       return handle_post_error(500, "Failed to save the challenge", req, res);
@@ -206,12 +220,14 @@ router.delete("/:id", async (req, res) => {
 
   // Delete the image
   filePath = path.join(filePathImages, challenge.image);
-  fs.unlink(filePath, (err) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send("Failed to delete the image");
-    }
-  });
+  if (fs.existsSync(filePath)) {
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send("Failed to delete the image");
+      }
+    });
+  }
 
   res.send(challenge);
 });

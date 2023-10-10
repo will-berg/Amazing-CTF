@@ -10,9 +10,6 @@ const app = express();
 const rootPath = "";
 const port = 5000;
 
-// Connect to database
-db();
-
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -41,6 +38,15 @@ app.use(`${rootPath}/register`, registerRoute);
 app.use(`${rootPath}/login`, loginRoute);
 app.use(`${rootPath}/submitflag`, submitFlagRoute);
 
-app.listen(port, () => {
-  console.log(`Connected successfully on port ${port}`);
-});
+// Start server but first connect to database
+async function startServer() {
+  try {
+    await db();
+    app.listen(port, () => console.log(`Server is running on port: ${port}`));
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+  }
+}
+
+startServer();
