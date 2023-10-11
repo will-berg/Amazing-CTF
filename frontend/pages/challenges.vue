@@ -17,8 +17,10 @@
       />
     </div>
       <HackModal 
+      :openModal="open"
       :hack="selectedHack" 
       @close-modal="closeModal" 
+      @selectHack="handleSelectHack"
       />
     </div>
   </div>
@@ -33,14 +35,21 @@
 
  const {data: hacks, error, pending} = await useFetch<HackDetails[]>('http://localhost:5000/challenges')
  const selectedHack = ref<HackDetails | null>(null);
+ const open = ref<boolean>(false);
 
-const openModal = (hack: HackDetails) => {
+const openModal = (hack: HackDetails): void => {
   selectedHack.value = hack;
+  open.value = true;
 };
 
-const closeModal = () => {
+const closeModal = (): void => {
   selectedHack.value = null;
+  open.value = false;
 };
+
+const handleSelectHack = (): void => {
+
+}
 
 </script>
  

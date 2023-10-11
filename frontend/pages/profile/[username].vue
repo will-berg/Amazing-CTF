@@ -1,32 +1,25 @@
 <template>
-    <div class="flex flex-col items-center justify-center min-h-screen">
-        <div v-if="error" class="pb-4">
-            <AlertError :errorMessage="error?.message" />
-        </div>
-        <div v-else-if="pending" class="pb-4">
-            <AlertLoading />
-        </div>
-        <!-- <ProfileImage 
-        :imageUrl="imageUrl"
-        @editProfileImage="showEditProfileImageView"
-        /> -->
-     
-        <ProfileUploadImg
-            v-if="showEditProfileImage"
-            class="modal-overlay"
-            @closeEditProfileImage="closeEditProfileImageView"
-            @uploadImage="handleUploadImage"
+  <div class="flex flex-col items-center justify-center h-screen">
+    <div>
+      <div class="flex flex-col items-center text-center">
+        <ProfileImg 
+        :image="image" 
+        @openUploadProfileImage="openUploadProfileImage"
         />
-
-      <p>{{ user.username }}</p>
-      <hr class="w-96 h-1 mx-auto my-4 bg-green-100 border-0 rounded md:my-10 dark:bg-gray-700">
-
-      <p>Completed Hacks</p>
-      <ProfileCompletedHacks :user="user"/>
-      <img :src="imageUrl" alt="Profile Image" />
+        <hr class="w-96 h-1 mx-auto my-4 bg-green-100 border-0 rounded md:my-10 dark:bg-gray-700">
+        <h2>{{ user.username }}</h2>
+        <h4>Total Score: {{ user.points }}</h4>
+        <hr class="w-96 h-1 mx-auto my-4 bg-green-100 border-0 rounded md:my-10 dark:bg-gray-700">
+        <CompletedHacks :hacks="user.completedHacks" />
+        <UploadProfileImage 
+        class="modal-overlay"
+        :openModal="open"
+        @uploadImage="uploadProfileImage"
+        />
+      </div>
     </div>
+  </div>
 </template>
-  
   
 
 <script lang="ts" setup>
@@ -34,35 +27,37 @@ import { useRoute } from "vue-router";
 import { User } from "@/types"
 import { ref } from 'vue';
 
-
-const showEditProfileImage = ref(false);
 const store = useUserStore()
+const image = ref<string>("");
+const open = ref<boolean>(false);
 
-//const route = useRoute();
-//const username = route.params.username as string;
 
 const user: User = ref<User>({
   email: "example@example.com",
-  username: "John",
-  completedHacks: "",
-  points: 10, 
+  username: "Regularclip",
+  completedHacks: ['SQLInject', 'ReDos', 'XSS-easy', 'XSS-hard'],
+  points: 175, 
 });
 
-const showEditProfileImageView = (): void => {
-      showEditProfileImage.value = true;
-};
 
-const closeEditProfileImageView = (): void => {
-      showEditProfileImage.value = false;
-};
+const { pending } = useAsyncData('profileImage', async () => {
+  const queryParams = new URLSearchParams({ username: user.value.username });
+  const url = `http://localhost:5000/profile?${queryParams.toString()}`;
+  image.value = url;
+});
 
-const handleUploadImage = async (image: File | null) => {
+const openUploadProfileImage = ():void => {
+  console.log("click was registered")
+  open.value = true
+}
+
+const uploadProfileImage = async (image: File | null):Promise<void> => {
+  open.value = false
   console.log("Image", image)
   if (!image) {
     console.error("No image selected");
     return;
   }
-
   const formData = new FormData();
   formData.append('username', user.value.username);
   formData.append('image', image, `${user.value.username}_profile_image.png`);
@@ -74,71 +69,7 @@ const handleUploadImage = async (image: File | null) => {
 
   console.log(responseData.value)
   console.log(error)
-};
-
-// const imageUrl = ref('');
-
-// const { data: imageUrlData, error, pending } = await $fetch<Blob>(
-//   "http://localhost:5000/profile",
-//   {
-//     query: { username: user.value.username },
-//     onResponse({ request, response, options }) {
-//       if (response.status === 200) {
-//         // Access the Blob object and create the URL
-//         const blobData = response._data;
-//         if (blobData) {
-//           imageUrl.value = URL.createObjectURL(blobData);
-//         }
-//       } else {
-//         // Handle the case when the response status is not 200 (e.g., an error occurred)
-//         console.error(`Error fetching image. Status: ${response.status}`);
-//       }
-//     }
-//   }
-// );
-
-const imageUrl = ref<string>("")
-
-const {data, error, pending} = await useAsyncData('users', async () =>{
-  const [img] = await Promise.all([$fetch(
-    'http://localhost:5000/profile', 
-    {query: {username: user.value.username}}
-    )
-  ])
-
-  console.log("here now: 111 ", img)
-  imageUrl.value = URL.createObjectURL(img)
-
-  console.log("imageUrl: ", imageUrl)
-
-  return{
-    imageUrl
-  }
-})
-
-// const { data: imageUrlData, error, pending } = await useFetch<Blob>(
-//   "http://localhost:5000/profile",
-//   {
-//     query: { username: user.value.username },
-//   }
-// );
-
-// URL.createObjectURL(imageUrlData);
-
-
-// console.log("here is the response: " , response)
-// const responseData = await response.arrayBuffer();
-// const blob = new Blob([responseData], { type: 'image/png' });
-// imageUrl.value = URL.createObjectURL(blob);
-// console.log("Here is the url: ", imageUrl.value);
-
-// if (response.ok) {
-//   const blob = await response.blob();
-//   const imageUrl = URL.createObjectURL(blob);
-//   console.log("url: ", imageUrl);
-// } else {
-//   console.error("Failed to fetch profile image");
-// }
+}
 
 
 </script>

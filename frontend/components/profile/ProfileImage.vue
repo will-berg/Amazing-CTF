@@ -35,7 +35,8 @@
 import type { User } from "@/types";
 
   defineProps<{
-    user: User | null;
+    imageUrl: string | null;
+
   }>();
 
   defineEmits<{

@@ -14,7 +14,7 @@
         <h2 class="card-title">{{ hack.title }}</h2>
       </div>
       <div class="card-actions flex justify-center items-center h-16">
-        <button class="btn btn-primary rounded-full" @click="$emit('selectedHack', hack)">Read More</button>
+        <button class="btn btn-secondary rounded-full" @click="$emit('selectedHack', hack)">Read More</button>
       </div>
     </div>
   </div>
