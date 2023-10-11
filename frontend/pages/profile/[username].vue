@@ -32,9 +32,8 @@ const store = useUserStore()
 const image = ref<string>("");
 const open = ref<boolean>(false);
 
-//const {user} : User = storeToRefs(store);
+const { user } : User = storeToRefs(store);
 
-const user: User = store.user;
 console.log("User: ", user)
 // const user: User = ref<User>({
 //   email: "example@example.com",

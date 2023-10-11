@@ -9,6 +9,7 @@ export const useUserStore = defineStore({
     } => ({
         user: null,
     }),
+    persist: true,
     // Computed properties of the state
     getters: {
         userEmail(): string {
