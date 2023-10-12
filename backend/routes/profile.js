@@ -34,16 +34,21 @@ router.get('/', async (req, res) => {
 });
   
 
-// Upload Profile Image
 router.post('/image', uploadProfileImage, async (req, res) => {
-    if (!req.file) {
-        console.log("No file selected")
-        return res.status(400).json({ error: 'No image selected' });
-      }
-      console.log("Image file: ", req.file)
-      // Assuming the image upload was successful, you can return a success message.
-      return res.status(200).json({ message: 'Profile image was updated' });
+  if (!req.file) {
+    console.log("No file selected");
+    return res.status(400).json({ error: 'No image selected' });
+  }
+
+  const username = req.body.username;
+  removeProfileImage(username);
+
+  console.log("Image file: ", req.file);
+
+  // Return a success message
+  return res.status(200).json({ message: 'Profile image was updated' });
 });
+
 
 
 module.exports = router;

@@ -1,5 +1,5 @@
 <template>
-    <div @click="$emit('openUploadProfileImage')">
+    <div :key="key" @click="$emit('openUploadProfileImage')">
         <NuxtImg
           v-if="image"
           class="bg-white rounded-full"
@@ -12,7 +12,8 @@
   </template>
   <script lang="ts" setup>
   defineProps<{
-    image: string 
+    image: string,
+    key: string,
   }>();
   defineEmits<{
     openUploadProfileImage: []

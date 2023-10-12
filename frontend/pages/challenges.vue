@@ -1,13 +1,7 @@
 <template>
   <div>
     <div class="container mx-auto p-4">
-      <div v-if="error" class="pb-4">
-        <AlertError :errorMessage="error?.message" />
-      </div>
-      <div v-else-if="pending" class="pb-4">
-        <AlertLoading />
-      </div>
-      <div v-else-if="hacks" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      <div :key="rerender" v-if="hacks" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
       <HackCard
         v-for="hack in hacks"
         :key="hack.id"
@@ -20,7 +14,6 @@
       :openModal="open"
       :hack="selectedHack" 
       @close-modal="closeModal" 
-      @selectHack="handleSelectHack"
       />
     </div>
   </div>
@@ -30,12 +23,32 @@
 
   
  <script lang="ts" setup>
- import { ref } from 'vue';
+ import { ref, onMounted, watch } from 'vue';
  import { HackDetails } from '~/types';
+ import { storeToRefs } from "pinia";
 
- const {data: hacks, error, pending} = await useFetch<HackDetails[]>('http://localhost:5000/challenges')
  const selectedHack = ref<HackDetails | null>(null);
  const open = ref<boolean>(false);
+ const rerender = ref<number>(0);
+
+
+ const hackStore = useHackStore();
+ const  { hacks } = storeToRefs(hackStore);
+
+
+ if(!hacks.value){
+    console.log("Fetching")
+    const {data: fetchedHacks, pending, error} = await useFetch(
+      'http://localhost:5000/challenges'
+    )
+
+    if(fetchedHacks){
+      console.log("Here are the fetched hacks: ", fetchedHacks)
+      hackStore.setHacks(fetchedHacks)
+      hacks.value = fetchedHacks // so that the hacks render on initial load
+    }
+  }
+ 
 
 const openModal = (hack: HackDetails): void => {
   selectedHack.value = hack;
@@ -47,9 +60,6 @@ const closeModal = (): void => {
   open.value = false;
 };
 
-const handleSelectHack = (): void => {
-
-}
 
 </script>
  

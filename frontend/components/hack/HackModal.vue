@@ -6,7 +6,7 @@
           <h3 class="font-bold text-lg">{{ hack.title }}</h3>
           <p class="py-4">{{ hack.description }}</p>
           <div class="modal-action">
-            <button class="btn btn-primary rounded-full" @click="$emit('selectHack', hack)">Select</button>
+            <NuxtLink :to="'/hackInfo/' + hack.id" class="btn btn-primary rounded-full">Select</NuxtLink>
             <button class="btn btn-primary rounded-full" @click="$emit('closeModal')">Close</button>
           </div>
         </div>
@@ -27,7 +27,6 @@
   }>();
 
   defineEmits<{
-    selectHack: (hack: HackDetails) => void;
     closeModal: [];
   }>();
   

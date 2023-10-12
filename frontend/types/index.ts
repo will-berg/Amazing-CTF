@@ -7,6 +7,7 @@ export interface HackDetails {
     id: number;
     title: string;
     description: string;
+    informationPage: string;
     imageUrl: string;
     points: number;
 }

@@ -1,8 +1,9 @@
 <template>
   <div class="flex flex-col items-center justify-center h-screen">
     <div>
-      <div class="flex flex-col items-center text-center">
+      <div v-if="user" class="flex flex-col items-center text-center">
         <ProfileImg 
+        :key="rerender"
         :image="image" 
         @openUploadProfileImage="openUploadProfileImage"
         />
@@ -31,19 +32,19 @@ import { storeToRefs } from "pinia";
 const store = useUserStore()
 const image = ref<string>("");
 const open = ref<boolean>(false);
-
-const { user } : User = storeToRefs(store);
-
-console.log("User: ", user)
-// const user: User = ref<User>({
-//   email: "example@example.com",
-//   username: "Regularclip",
-//   completedHacks: ['SQLInject', 'ReDos', 'XSS-easy', 'XSS-hard'],
-//   points: 175, 
-// });
+const rerender = ref<string>("");
+//const { user } = storeToRefs(store);
 
 
-const queryParams = new URLSearchParams({ username: user.username });
+const user: User = ref<User>({
+  email: "example@example.com",
+  username: "Regularclip",
+  completedHacks: ['SQLInject', 'ReDos', 'XSS-easy', 'XSS-hard'],
+  points: 175, 
+});
+
+
+const queryParams = new URLSearchParams({ username: user.value.username });
 const url = `http://localhost:5000/profile?${queryParams.toString()}`;
 image.value = url;
 
@@ -60,17 +61,28 @@ const uploadProfileImage = async (image: File | null):Promise<void> => {
     return;
   }
   const formData = new FormData();
-  formData.append('username', user.username);
-  formData.append('image', image, `${user.username}_profile_image.png`);
+  formData.append('username', user.value.username);
+  formData.append('image', image, `${user.value.username}_profile_image.png`);
 
-  const { data: responseData, error, pending } = await useFetch('http://localhost:5000/profile/image', {
+  const { data: responseData, error, pending } = await useFetch(
+    'http://localhost:5000/profile/image', 
+    {
         method: 'post',
         body: formData
-    })
-
-  window.location.reload()
+    }
+  )
+  // window.location.reload()
+  
+  if(responseData.value){
+    forceRender()
+    console.log('refreshing')
+  }
 }
 
+const forceRender = () => {
+  rerender.value = "asdaölsdöaslmd";
+  console.log('rerender triggered');
+};
 
 </script>
 

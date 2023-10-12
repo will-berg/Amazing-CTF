@@ -7,7 +7,6 @@ export const useThemeStore = defineStore({
 	} => ({
 		theme: "dark",
 	}),
-	persist: true,
 	actions: {
 		toggleTheme(): void {
 			this.theme = this.theme === "light" ? "dark" : "light";

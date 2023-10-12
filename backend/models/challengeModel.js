@@ -9,11 +9,21 @@ const challengeSchema = mongoose.Schema({
     type: Number,
     required: true,
   },
+  // Short desrciption of the challenge
   description: {
     type: String,
     required: true,
   },
+  // Long description of the challenge
+  informationPage: {
+    type: String,
+    required: true,
+  },
   image: {
+    type: String,
+    required: true,
+  },
+  url: {
     type: String,
     required: true,
   },
