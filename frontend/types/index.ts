@@ -1,8 +1,3 @@
-export interface CatFact {
-    fact: string;
-    length: number;
-}
-
 export interface HackDetails {
     id: number;
     title: string;
@@ -20,7 +15,11 @@ export interface User {
 }
 
 export interface UserLeaderboard {
-    position: number;
-    username: string;
-    score: number;
+    name: string;
+    points: number;
+}
+
+export interface Leaderboard {
+    leaderboard: UserLeaderboard[];
+    total: number;
 }
