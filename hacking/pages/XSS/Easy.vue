@@ -23,10 +23,10 @@
 
             </div>
 
-            <dialog id="my_modal_3" class="modal">
+            <dialog id="my_modal_3" :class="{'modal' : true, 'modal-open': showModal}">
                 <div class="modal-box">
                     <form method="dialog">
-                        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" @click="closeModal">✕</button>
                     </form>
                     <h3 class="font-bold text-lg">Cross Site Scripting - XSS</h3>
                     <p class="text-sm">Easy Difficulty</p>
@@ -45,6 +45,11 @@
 const postData: Ref<string> = ref("");
 const posts: Ref<string[]> = ref([]);
 const myVar = "</" + "script>"
+const showModal = ref<boolean>(true);
+
+const closeModal = (): void => {
+    showModal.value = false;
+}
 
 const newPost = (): void => {   
     console.log("postdata: " + postData.value)
