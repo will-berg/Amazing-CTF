@@ -24,7 +24,6 @@ router.get("/", async (req, res) => {
     console.error(err);
     res.status(500).send("Failed to interact with the database");
   }
-  Ren;
 });
 
 module.exports = router;
