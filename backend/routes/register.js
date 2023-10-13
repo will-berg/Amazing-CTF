@@ -4,10 +4,10 @@ const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 
 router.post("/", async (req, res) => {
-  const { email, name, password, repeatPassword } = req.body;
-  console.log(email, name, password, repeatPassword);
+  const { email, username, password, repeatPassword } = req.body;
+  console.log(req.body);
 
-  if (!email || !password || !name || !repeatPassword) {
+  if (!email || !password || !username || !repeatPassword) {
     console.log("All fields required")
     return res
       .status(400)
@@ -39,7 +39,7 @@ router.post("/", async (req, res) => {
 
   try {
     const accountEmailExists = await User.findOne({ email: email });
-    const accountNameExists = await User.findOne({ name: name });
+    const accountNameExists = await User.findOne({ username: username });
     console.log("email and name exists value: " + accountEmailExists, accountNameExists)
     if (accountEmailExists || accountNameExists) {
         console.log("account already exists")
@@ -49,7 +49,7 @@ router.post("/", async (req, res) => {
     const passHash = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
     const newUser = new User({
       email: email,
-      name: name,
+      username: username,
       password: passHash,
       completedHacks: [],
       points: 0,
