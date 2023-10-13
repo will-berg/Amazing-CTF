@@ -24,5 +24,8 @@ export const useUserStore = defineStore({
         logout(): void {
             this.user = null;
         },
+        testing(): void {
+            console.log("testing");
+        },
     },
 });
