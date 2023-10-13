@@ -66,7 +66,7 @@
             <AnimatedHacker />
         </div>
 		<!-- Cards -->
-        <div class="grid md:grid-cols-3 md:grid-rows-1 py-16 gap-4">
+        <div class="grid lg:grid-cols-3 md:grid-rows-1 py-16 gap-4">
             <FeatureCard
                 title="Challenges"
                 description="Engage in challenges of varying difficulties to hone your skills."
@@ -86,7 +86,11 @@
     </div>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+useHead({
+    title: "Home",
+});
+</script>
 
 <style>
 </style>
