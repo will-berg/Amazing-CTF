@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 
 router.post("/", async (req, res) => {
   const { email, username, password, repeatPassword } = req.body;
-  console.log(email, username, password, repeatPassword);
+  console.log(req.body);
 
   if (!email || !password || !username || !repeatPassword) {
     console.log("All fields required")
