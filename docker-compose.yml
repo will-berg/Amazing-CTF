@@ -3,10 +3,13 @@ version: "3"
 services:
   frontend:
     container_name: frontend
+    restart: always
     build:
       context: "./frontend"
     ports:
       - "3000:3000"
+    volumes:
+      - ./data:/app/data
 
   hacking:
     container_name: hacking
@@ -17,33 +20,31 @@ services:
 
   database:
     image: 'mongo'
+    container_name: database
+    restart: always
     environment: 
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=test
     ports:
       - "7017:27017"
     volumes:
-      - ./backend/files:/app/backend/files
-    #  - ./mongodb_data:/data/db
+      - ./database:/data/db
 
   backend:
-    depends_on:
-      - database
     container_name: backend
+    restart: always
     build:
       context: "./backend"
     ports:
       - "5000:5000"
     # Ensure that files folder is stored in the host machine, so data is not lost when the container is removed
     volumes:
-      - ./backend/files:/app/backend/files
+      - ./data:/app/data
     environment: 
       - DB_HOST=database
       - DB_NAME=amazing-ctf
       - DB_PORT=27017
       - DB_ROOT_USERNAME=root
       - DB_PASSWORD=test
-    
-volumes:
-  mongodb_data:
-  # TODO: Decide the database and link it to the backend
+    depends_on:
+      - database

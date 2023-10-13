@@ -20,14 +20,14 @@
               <!-- Title, Description and Link -->
               <h2 class="text-xl font-semibold">{{ hack.title }}</h2>
               <p class="h-24 overflow-y-hidden">{{ hack.description }}</p>
-              <a href="#" class="flex items-center justify-center mt-2 text-blue-500 hover:underline">Start</a>
+              <a href="#" class="flex items-center justify-center mt-2 btn btn-primary w-full">Start</a>
             </div>
           </div>
         </div>
       </div>
     </div>
   </template>
-  
+
   <script lang="ts" setup>
   import type { HackDetails } from "@/types";
 

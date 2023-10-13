@@ -1,123 +1,253 @@
-const express = require('express');
-const path = require('path');
-const fs = require('fs');
+const express = require("express");
+const path = require("path");
+const fs = require("fs");
+const multer = require("multer");
+const Challenge = require("../models/challengeModel");
 
 const router = express.Router();
-const filePath = path.join(__dirname, '../images/challenges');
+const filePathImages = path.join(__dirname, "../../data/challenges/images");
 
-// Temporary data
-const challenges = [
-    {
-        id: 1,
-        title: 'Challenge 1',
-        description: 'This is the first challenge',
-        image: 'challenge1.png',
-        points: 100
-    },
-    {
-        id: 2,
-        title: 'Challenge 2',
-        description: 'This is the second challenge',
-        image: 'challenge1.png',
-        points: 200
-    },
-    {
-        id: 3,
-        title: 'Challenge 3',
-        description: 'This is the third challenge',
-        image: 'challenge1.png',
-        points: 300
-    }
+//  Based on: https://image.nuxt.com/usage/nuxt-picture
+const suportedImageTypes = [
+  "image/webp",
+  "image/avif",
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/gif",
 ];
-let nextId = 4;
+const storage = multer.diskStorage({
+  destination: (_req, _file, cb) => {
+    cb(null, filePathImages);
+  },
+  filename: (req, file, cb) => {
+    // Validate that there is a file and that it is an image
+    if (!suportedImageTypes.includes(file.mimetype)) {
+      return cb(
+        new Error(
+          `Unsupported file type (${
+            file.mimetype
+          }). Supported types are: ${suportedImageTypes.join(", ")}`
+        )
+      );
+    }
+
+    const extension = path.extname(file.originalname).toLowerCase();
+    req.file = file;
+    cb(null, `${Date.now()}${extension}`);
+  },
+});
+const upload = multer({ storage: storage }).single("image");
+
+// Create the folder if it does not exist
+if (!fs.existsSync(filePathImages)) {
+  fs.mkdirSync(filePathImages, { recursive: true });
+}
+
+async function _get_challenge(id) {
+  return await Challenge.findById(id).exec();
+}
+async function _delete_challenge(id) {
+  return await Challenge.findByIdAndDelete(id).exec();
+}
+async function get_challenge(req, res, searchFunc = _get_challenge) {
+  let challenge = null;
+  try {
+    challenge = await searchFunc(req.params.id);
+  } catch (err) {
+    if (err.name !== "CastError") {
+      console.error(err);
+      res.status(500).send("Failed to interact with the database");
+      return;
+    }
+  }
+
+  if (!challenge) {
+    res.status(404).send("The challenge with the given ID was not found");
+    return;
+  }
+
+  return challenge;
+}
 
 // GET all challenges
-router.get('/', (_req, res) => {
-    // Load images
-    const challengesWithImages = challenges.map(c => {
-        const imagePath = path.join(filePath, c.image);
-        const image = fs.readFileSync(imagePath, 'base64');
-        return {
-            id: c.id,
-            title: c.title,
-            description: c.description,
-            image: image,
-            points: c.points
-        };
-    });
-
-    res.send(challengesWithImages);
+router.get("/", async (_req, res) => {
+  const challenges = await Challenge.find({}).exec();
+  res.send(challenges);
 });
 
 // GET a single challenge
-router.get('/:id', (req, res) => {
-    const challenge = challenges.find(c => c.id === parseInt(req.params.id));
-    if (!challenge) return res.status(404).send('The challenge with the given ID was not found');
+router.get("/:id", async (req, res) => {
+  let challenge = await get_challenge(req, res);
+  if (!challenge) return;
 
-    // Load image
-    const image = fs.readFileSync(path.join(filePath, challenge.image), 'base64');
-    challenge.image = image;
-
-    res.send(challenge);
+  res.send(challenge);
 });
+
+function handle_post_error(errCode, errMsg, req, res) {
+  // Delete the image
+  if (req.file?.filename !== undefined) {
+    filePath = path.join(filePathImages, req.file.filename);
+    if (fs.existsSync(filePath)) {
+      fs.unlink(filePath, (err) => {
+        if (err) {
+          console.error(err);
+          errMsg += "\nFailed to delete the image";
+        }
+      });
+    }
+  }
+  res.status(errCode).send(errMsg);
+}
 
 // POST a new challenge
-router.post('/', (req, res) => {
-    // Validate the request
-    if (!req.body.title || !req.body.description || !req.body.image || !req.body.points) 
-        return res.status(400).send('Bad request');
-
-    // Save image
-    const image = req.body.image;
-    const fileName = `challenge${nextId}.jpg`;
-    fs.writeFile(path.join(filePath, fileName), image, 'base64', (err) => {
-        if (err) return res.status(500).send('Internal server error');
-    });
-
-    const challenge = {
-        id: nextId,
-        title: req.body.title,
-        description: req.body.description,
-        image: fileName,
-        points: req.body.points
-    };
-    nextId++;
-    challenges.push(challenge);
-
-    res.status(201).send(challenge);
-});
-
-// PUT (update) an existing challenge
-router.put('/:id', (req, res) => {
-    // Validate the request (at least one field must be present)
-    if (!req.body.title && !req.body.description && !req.body.image && !req.body.points) 
-        return res.status(400).send('Bad request');
-
-    const challenge = challenges.find(c => c.id === parseInt(req.params.id));
-    if (!challenge) return res.status(404).send('The challenge with the given ID was not found');
-
-    // Update the challenge
-    if (req.body.title) challenge.title = req.body.title;
-    if (req.body.description) challenge.description = req.body.description;
-    if (req.body.points) challenge.points = req.body.points;
-
-    // Save image
-    if (req.body.image) {
-        // Remove old image
-        fs.unlink(path.join(filePath, challenge.image), (err) => {
-            if (err) return res.status(500).send('Internal server error');
-        });
-
-        // Save new image
-        const image = req.body.image;
-        const fileName = `challenge${challenge.id}.jpg`;
-        fs.writeFile(path.join(filePath, fileName), image, 'base64', (err) => {
-            if (err) return res.status(500).send('Internal server error');
-        });
-        challenge.image = fileName;
+router.post("/", async (req, res) => {
+  upload(req, res, async (err) => {
+    if (err) {
+      console.error(err);
+      return handle_post_error(400, err.message, req, res);
     }
 
-    res.send(challenge);
+    // Validate the request
+    if (
+      req.body.title === undefined ||
+      req.body.description === undefined ||
+      req.body.informationPage === undefined ||
+      req.body.points === undefined ||
+      req.body.url === undefined ||
+      req.file?.filename === undefined
+    )
+      return handle_post_error(
+        400,
+        "Missing required fields, it should contain: title, description, informationPage, points, url and image",
+        req,
+        res
+      );
+
+    const challenge = new Challenge({
+      title: req.body.title,
+      description: req.body.description,
+      informationPage: req.body.informationPage,
+      points: req.body.points,
+      url: req.body.url,
+      image: req.file.filename,
+    });
+
+    // Save the challenge
+    try {
+      await challenge.save();
+    } catch (err) {
+      console.error(err);
+      return handle_post_error(500, "Failed to save the challenge", req, res);
+    }
+
+    res.status(201).send(challenge);
+  });
+});
+
+// PUT a challenge
+router.put("/:id", async (req, res) => {
+  upload(req, res, async (err) => {
+    if (err) {
+      console.error(err);
+      return handle_post_error(400, err.message, req, res);
+    }
+
+    // Find the challenge
+    let challenge = await get_challenge(req, res);
+    if (!challenge) return;
+
+    // Validate that at least one field is being updated
+    if (
+      req.body.title === undefined &&
+      req.body.description === undefined &&
+      req.body.informationPage === undefined &&
+      req.body.points === undefined &&
+      req.body.url === undefined &&
+      req.file?.filename === undefined
+    )
+      return handle_post_error(
+        400,
+        "Missing required fields, it should contain at least one of: title, description, informationPage, points, url and image",
+        req,
+        res
+      );
+
+    // Check if the image is being updated and remove the old one
+    if (req.image?.filename !== undefined) {
+      filePath = path.join(filePathImages, challenge.image);
+      if (fs.existsSync(filePath)) {
+        fs.unlink(filePath, (err) => {
+          if (err) {
+            console.error(err);
+            return handle_post_error(
+              500,
+              "Failed to delete the old image",
+              req,
+              res
+            );
+          }
+        });
+      }
+    }
+
+    // Update the challenge fields
+    challenge.title = req.body.title || challenge.title;
+    challenge.description = req.body.description || challenge.description;
+    challenge.informationPage =
+      req.body.informationPage || challenge.informationPage;
+    challenge.points = req.body.points || challenge.points;
+    challenge.url = req.body.url || challenge.url;
+    challenge.image = req.file?.filename || challenge.image;
+
+    // Save the challenge the updated challenge
+    try {
+      // await Challenge.findByIdAndUpdate(req.params.id, challenge).exec();
+      await challenge.save();
+    } catch (err) {
+      console.error(err);
+      return handle_post_error(500, "Failed to save the challenge", req, res);
+    }
+
+    res.status(200).send(challenge);
+  });
+});
+
+// DELETE a challenge
+router.delete("/:id", async (req, res) => {
+  let challenge = await get_challenge(req, res, _delete_challenge);
+  if (!challenge) return;
+
+  // Delete the image
+  filePath = path.join(filePathImages, challenge.image);
+  if (fs.existsSync(filePath)) {
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send("Failed to delete the image");
+      }
+    });
+  }
+
+  res.send(challenge);
+});
+
+// GET the image of a challenge with the given ID
+router.get("/:id/image", async (req, res) => {
+  let challenge = await get_challenge(req, res);
+  if (!challenge) return;
+
+  res.sendFile(path.join(filePathImages, challenge.image));
+});
+
+// Get the image of a challenge with the image name
+router.get("/image/:name", async (req, res) => {
+  // Validate that the image exists
+  const filePath = path.join(filePathImages, req.params.name);
+  if (!fs.existsSync(filePath))
+    return res.status(404).send("The image was not found");
+
+  res.sendFile(filePath);
 });
 
 module.exports = router;

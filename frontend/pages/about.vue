@@ -1,6 +1,6 @@
 <!-- About us page -->
 <template>
-    <div>
+    <div class="p-8">
         <ContentRenderer :value="data" class="prose max-w-none" />
     </div>
 </template>
