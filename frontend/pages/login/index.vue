@@ -12,6 +12,7 @@
             type="password"
             v-model="user.password"
             class="input input-bordered w-full max-w-xs"
+			v-on:keyup.enter="onSubmit"
         />
 
         <div v-if="errorLogin" class="text-red-500">
@@ -31,6 +32,10 @@
 <script lang="ts" setup>
 import { User } from "@/types";
 import { useRouter } from "vue-router";
+
+useHead({
+    title: "Login",
+});
 
 const router = useRouter();
 const userStore = useUserStore();

@@ -72,6 +72,10 @@
 <script lang="ts" setup>
 import { UserLeaderboard } from '~/types';
 
+useHead({
+    title: "Leaderboards",
+});
+
 function navigateToUserProfile(username: string) {
   return navigateTo(`/profile/${username}`);
 }

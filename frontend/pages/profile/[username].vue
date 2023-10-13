@@ -3,6 +3,10 @@
 </template>
 
 <script lang="ts" setup>
+useHead({
+    title: "Profile",
+});
+
 import { useRoute } from "vue-router";
 
 const route = useRoute();

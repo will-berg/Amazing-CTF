@@ -23,6 +23,7 @@
             type="password"
             v-model="user.repeatPassword"
             class="input input-bordered w-full max-w-xs"
+			v-on:keyup.enter="signUp"
         />
         <div v-if="errorRegister" class="text-red-500">
             {{ errorRegister }}
@@ -39,6 +40,11 @@
 
 <script lang="ts" setup>
 import { useRouter } from "vue-router";
+
+useHead({
+    title: "Register",
+});
+
 const { register, errorRegister } = useAuth();
 
 const router = useRouter();
