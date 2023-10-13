@@ -2,23 +2,25 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
-    '@nuxtjs/tailwindcss',
-    '@nuxt/content',
-    '@nuxt/image',
-	'@pinia/nuxt',
-	'@pinia-plugin-persistedstate/nuxt',
-	'nuxt-icon'
+    "@nuxtjs/tailwindcss",
+    "@nuxt/content",
+    "@nuxt/image",
+    "@pinia/nuxt",
+    "@pinia-plugin-persistedstate/nuxt",
+    "nuxt-icon",
+    "@vue-macros/nuxt",
+    "@vueuse/nuxt",
   ],
   // Auto import from stores directory
   imports: {
-	dirs: ['stores'],
+    dirs: ["stores"],
   },
   routeRules: {
     // Build-time static page generation
-    '/': { prerender: true },
+    "/": { prerender: true },
     // Client-side rendering (CSR)
-    '/cat': { ssr: false },
+    "/cat": { ssr: false },
     // Server-side rendering (SSR)
-    '/test/**': { ssr: true },
+    "/test/**": { ssr: true },
   },
-})
+});
