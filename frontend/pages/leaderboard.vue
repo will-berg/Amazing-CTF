@@ -20,7 +20,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="entry in leaderboard" :key="entry.name" @click="navigateToUserProfile(entry.name)"
+            <tr v-for="entry in leaderboard" :key="entry.username" @click="navigateToUserProfile(entry.username)"
               class="cursor-pointer hover">
               <td class="border border-l-2 px-4 py-2">
                 <div class="flex items-center justify-center">
@@ -31,8 +31,7 @@
                   <span v-else class="text-lg text-center">{{ entry.position }}</span>
                 </div>
               </td>
-              <td class="border px-4 py-2 truncate max-w-md hover:whitespace-normal hover:break-words">{{ entry.name
-              }}
+              <td class="border px-4 py-2 truncate max-w-md hover:whitespace-normal hover:break-words">{{ entry.username }}
               </td>
               <td class="border px-4 py-2">{{ entry.points }}</td>
             </tr>
@@ -50,7 +49,7 @@
 import { Leaderboard } from "@/types";
 
 useHead({
-    title: "Leaderboards",
+  title: "Leaderboards",
 });
 
 function navigateToUserProfile(username: string) {

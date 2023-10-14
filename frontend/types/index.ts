@@ -15,7 +15,7 @@ export interface User {
 }
 
 export interface UserLeaderboard {
-    name: string;
+    username: string;
     points: number;
 }
 

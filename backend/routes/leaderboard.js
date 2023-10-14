@@ -13,7 +13,7 @@ router.get("/", async (req, res) => {
   const current_user = (page - 1) * limit;
   try {
     const leaderboard = await User.find({})
-      .select("name points")
+      .select("username points")
       .sort({ points: "descending" })
       .skip(current_user)
       .limit(limit)
