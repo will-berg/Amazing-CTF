@@ -37,6 +37,11 @@
                     <p class="py-4 font-bold">alert("You have been hacked!");</p>
                 </div>
             </dialog>
+
+            <dialog id="my_modal_3" class="modal modal-open" v-if="completed">
+                <SuccessCard points="5" hackName="XSS - Easy" />
+            </dialog>
+
         </div>
     </div>
 </template>
@@ -44,20 +49,23 @@
 <script lang="ts" setup>
 const postData: Ref<string> = ref("");
 const posts: Ref<string[]> = ref([]);
-const myVar = "</" + "script>"
+const scriptEndTag = "</" + "script>"
 const showModal = ref<boolean>(true);
-
+const completed = ref<boolean>(false);
+// double check this pattern against different inputs
+const xsspattern = /<script.*?>\s*alert\(\s*["']You have been hacked!["']\s*\)\s*;?\s*<\/script>/i;
 const closeModal = (): void => {
     showModal.value = false;
 }
 
 const newPost = (): void => {   
     console.log("postdata: " + postData.value)
-    console.log("<script>alert(\"You have been hacked!\");" + myVar)
-    if (postData.value == "<script>alert(\"You have been hacked!\");"+myVar) {
+    console.log("<script>alert(\"You have been hacked!\");" + scriptEndTag)
+    if (xsspattern.test(postData.value)) {
         alert("You have been hacked!");
         postData.value = "";
         //call success function here to get flag
+        completed.value = true;
     }
     posts.value.push(postData.value);
     postData.value = "";
