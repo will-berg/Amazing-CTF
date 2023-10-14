@@ -41,6 +41,8 @@ services:
       - "3000:3000"
     volumes:
       - ./data:/app/data
+    depends_on:
+      - backend
 
   hacking:
     container_name: hacking
@@ -48,3 +50,5 @@ services:
       context: "./hacking"
     ports:
       - "4000:4000"
+    depends_on:
+      - backend

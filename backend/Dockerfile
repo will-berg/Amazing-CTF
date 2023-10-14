@@ -1,5 +1,5 @@
 # Dockerfile
-FROM node:18-alpine
+FROM node:16-alpine
 
 # create destination directory
 WORKDIR /app/backend
@@ -14,5 +14,8 @@ RUN npm install
 
 # We use port 5000 for the backend
 EXPOSE 5000
+
+# We set the environment variable DEBUG to express:* to enable debug logging
+# ENV DEBUG=express:*
 
 ENTRYPOINT  [ "node", "index.js" ]
