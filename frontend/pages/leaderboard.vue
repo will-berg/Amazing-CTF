@@ -31,7 +31,8 @@
                   <span v-else class="text-lg text-center">{{ entry.position }}</span>
                 </div>
               </td>
-              <td class="border px-4 py-2 truncate max-w-md hover:whitespace-normal hover:break-words">{{ entry.username }}
+              <td class="border px-4 py-2 truncate max-w-md hover:whitespace-normal hover:break-words">{{ entry.username
+              }}
               </td>
               <td class="border px-4 py-2">{{ entry.points }}</td>
             </tr>
@@ -57,13 +58,48 @@ function navigateToUserProfile(username: string) {
 }
 
 const limit = 10; // Number of entries per page
-
 const page = ref(1);
-const { data, pending, error } = useFetch<Leaderboard>(
-  "http://localhost:5000/leaderboard",
-  { query: { page, limit } }
+
+// Couldn't get the server side rendering to work with the fetching of the leaderboard data
+// It refuses to connect to the backend server with the following error:
+// "[GET] "http://127.0.0.1:5000/leaderboard?page=1&limit=10": <no response> request to http://127.0.0.1:5000/leaderboard?page=1&limit=10 failed, reason: connect ECONNREFUSED 127.0.0.1:5000"
+//
+// FetchError: [GET] "http://127.0.0.1:5000/leaderboard?page=1&limit=10": <no response> request to http://127.0.0.1:5000/leaderboard?page=1&limit=10 failed, reason: connect ECONNREFUSED 127.0.0.1:5000
+//   at processTicksAndRejections (node:internal/process/task_queues:96:5)
+//     at async $fetchRaw2 (file:///app/frontend/.output/server/chunks/nitro/node-server.mjs:2753:14)
+//     at async $fetch2 (file:///app/frontend/.output/server/chunks/nitro/node-server.mjs:2786:15)
+//     at async setup (file:///app/frontend/.output/server/chunks/app/_nuxt/leaderboard-3c68de4a.mjs:171:18) {
+//   cause: FetchError: request to http://127.0.0.1:5000/leaderboard?page=1&limit=10 failed, reason: connect ECONNREFUSED 127.0.0.1:5000
+//       at ClientRequest.<anonymous> (file:///app/frontend/.output/server/chunks/nitro/node-server.mjs:50:18233)
+//       at ClientRequest.emit (node:events:513:28)
+//       at Socket.socketErrorListener (node:_http_client:494:9)
+//       at Socket.emit (node:events:513:28)
+//       at emitErrorNT (node:internal/streams/destroy:157:8)
+//       at emitErrorCloseNT (node:internal/streams/destroy:122:3)
+//       at processTicksAndRejections (node:internal/process/task_queues:83:21) {
+//     type: 'system',
+//     errno: 'ECONNREFUSED',
+//     code: 'ECONNREFUSED',
+//     erroredSysCall: 'connect'
+//   },
+//   statusCode: 500,
+//   fatal: false,
+//   unhandled: false,
+//   statusMessage: undefined,
+//   data: undefined,
+//   __nuxt_error: true
+// }
+//
+// However, running the frontend server with "npm run dev" works fine and the leaderboard is fetched correctly even in server side rendering.
+// The only solution I found was to use the useFetch hook with server: false and lazy: true.
+const { data, pending, error } = await useFetch<Leaderboard>(
+  "http://127.0.0.1:5000/leaderboard",
+  { query: { page, limit }, method: "GET", lazy: true, server: false }
 );
 
+if (error.value) {
+  console.error(error.value);
+}
 // map the position of the user in the leaderboard
 const leaderboard = computed(() => {
   if (!data.value?.leaderboard) return [];
