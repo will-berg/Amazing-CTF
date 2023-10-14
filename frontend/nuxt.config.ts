@@ -6,7 +6,9 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@nuxt/image',
     '@pinia/nuxt',
-    'nuxt-icon'
+    'nuxt-icon',
+    "@vue-macros/nuxt",
+    "@vueuse/nuxt",
   ],
   // Auto import from stores directory
   imports: {
@@ -16,4 +18,4 @@ export default defineNuxtConfig({
     // Build-time static page generation
     '/': { prerender: true },
   },
-})
+});

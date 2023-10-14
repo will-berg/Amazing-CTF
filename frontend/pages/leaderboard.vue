@@ -49,6 +49,10 @@
 <script lang="ts" setup>
 import { Leaderboard } from "@/types";
 
+useHead({
+    title: "Leaderboards",
+});
+
 function navigateToUserProfile(username: string) {
   return navigateTo(`/profile/${username}`);
 }

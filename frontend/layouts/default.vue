@@ -11,6 +11,13 @@
 </template>
 
 <script lang="ts" setup>
+// Set page title
+useHead({
+    titleTemplate: (pageTitle) => {
+        return pageTitle ? `AmazingCTF - ${pageTitle}` : "AmazingCTF";
+    },
+});
+
 // Store persistence
 import { storeToRefs } from "pinia";
 

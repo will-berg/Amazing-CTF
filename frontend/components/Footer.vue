@@ -1,7 +1,5 @@
 <template>
-    <footer
-        class="flex justify-center md:gap-60 gap-6 footer p-10 bg-base-300"
-    >
+    <footer class="flex justify-center md:gap-60 footer p-8 bg-base-300">
         <nav>
             <header class="footer-title">Services</header>
             <NuxtLink to="/hacking" class="hover:shadow-md hover:underline"
@@ -13,12 +11,8 @@
         </nav>
         <nav>
             <header class="footer-title">Company</header>
-            <NuxtLink to="/about" class="hover:shadow-md hover:underline"
-                >About Us</NuxtLink
-            >
-            <NuxtLink to="/contact" class="hover:shadow-md hover:underline"
-                >Contact</NuxtLink
-            >
+            <NuxtLink to="/about" class="hover:shadow-md hover:underline">About Us</NuxtLink>
+            <NuxtLink to="/contact" class="hover:shadow-md hover:underline">Contact</NuxtLink>
         </nav>
         <nav>
             <header class="footer-title">Legal</header>
@@ -30,7 +24,7 @@
             >
         </nav>
     </footer>
-    <footer class="footer footer-center p-4 bg-base-300 text-base-content">
+    <footer class="footer footer-center p-2 bg-base-300 text-base-content">
         <div>
             <p>Copyright © {{ year }} AmazingCTF. All rights reserved.</p>
         </div>
