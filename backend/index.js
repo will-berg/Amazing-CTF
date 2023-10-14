@@ -28,15 +28,17 @@ app.get(rootPath, (_req, res) => {
 });
 
 // Routes
-const challenges = require("./routes/challenges");
+const challengesRoute = require("./routes/challenges");
 const registerRoute = require("./routes/register");
 const loginRoute = require("./routes/login");
 const submitFlagRoute = require("./routes/submitflag");
+const leaderboardRoute = require("./routes/leaderboard");
 
-app.use(`${rootPath}/challenges`, challenges);
+app.use(`${rootPath}/challenges`, challengesRoute);
 app.use(`${rootPath}/register`, registerRoute);
 app.use(`${rootPath}/login`, loginRoute);
 app.use(`${rootPath}/submitflag`, submitFlagRoute);
+app.use(`${rootPath}/leaderboard`, leaderboardRoute);
 
 // Start server but first connect to database
 async function startServer() {

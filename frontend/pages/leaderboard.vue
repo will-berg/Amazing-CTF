@@ -8,104 +8,79 @@
       <AlertLoading />
     </div>
     <!-- Center everything in the middle of the page -->
-    <div v-else class="flex flex-col items-center m-auto">
-      <h1 class="text-4xl pb-4 text-yellow-500 font-bold">Leaderboard</h1>
-      <div class="flex flex-col">
-        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-            <!-- Table -->
-            <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-              <table class="min-w-full divide-y divide-gray-200">
-                <!-- Table header -->
-                <thead class="bg-gray-50">
-                  <tr>
-                    <th scope="col"
-                      class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Rank
-                    </th>
-                    <th scope="col"
-                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Username
-                    </th>
-                    <th scope="col"
-                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Score
-                    </th>
-                  </tr>
-                </thead>
-                <!-- Table body -->
-                <tbody class="bg-white divide-y divide-gray-200">
-                  <tr v-for="entry in leaderboard" :key="entry.username"
-                    class="hover:bg-gray-100 cursor-pointer hover:shadow-md"
-                    @click="navigateToUserProfile(entry.username)">
-                    <!-- Top 3 renders a medal icon with the rank inside -->
-                    <td class="px-6 py-4 whitespace-nowrap">
-                      <div class="text-lg text-gray-900 flex items-center justify-center">
-                        <span v-if="entry.position <= 3">
-                          <NuxtImg class="inline-block" width="24" height="24"
-                            :src="`./images/medals/${entry.position}.webp`" />
-                        </span>
-                        <span v-else>{{ entry.position }}</span>
-                      </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                      <div class="text-sm text-gray-900">{{ entry.username }}</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                      <div class="text-sm text-gray-900">{{ entry.score }}</div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <!-- Pagination -->
-              <div class="px-6 py-3">
-                <Pagination :page="page" :maxPage="maxPage" />
-              </div>
-            </div>
-          </div>
-        </div>
+    <div v-else class="w-full flex flex-col items-center justify-center">
+      <h1 class="text-3xl font-bold mb-4 text-yellow-400">Leaderboard</h1>
+      <div class="overflow-x-auto max-w-full">
+        <table class="table w-fit rounded-xl shadow-lg">
+          <thead class="uppercase text-sm leading-normal text-white bg-gray-800">
+            <tr>
+              <th class="px-4 py-2">Rank</th>
+              <th class="px-4 py-2">Username </th>
+              <th class="px-4 py-2">Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="entry in leaderboard" :key="entry.username" @click="navigateToUserProfile(entry.username)"
+              class="cursor-pointer hover">
+              <td class="border border-l-2 px-4 py-2">
+                <div class="flex items-center justify-center">
+                  <span v-if="entry.position <= 3">
+                    <NuxtImg class="inline-block" width="24" height="24"
+                      :src="`./images/medals/${entry.position}.webp`" />
+                  </span>
+                  <span v-else class="text-lg text-center">{{ entry.position }}</span>
+                </div>
+              </td>
+              <td class="border px-4 py-2 truncate max-w-md hover:whitespace-normal hover:break-words">{{ entry.username }}
+              </td>
+              <td class="border px-4 py-2">{{ entry.points }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="flex items-center justify-center mt-4">
+        <Pagination :page="page" :max_page="max_page" @update:page="newPage => page = newPage" />
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { UserLeaderboard } from '~/types';
+import { Leaderboard } from "@/types";
 
 useHead({
-    title: "Leaderboards",
+  title: "Leaderboards",
 });
 
 function navigateToUserProfile(username: string) {
   return navigateTo(`/profile/${username}`);
 }
 
-// Load the leaderboard data from the API endpoint (temporarily use dummy data)
-const error: any = ref(null);
-const pending = ref(false);
-const page = ref(1);
-const maxPage = ref(10);
-const leaderboard: Ref<UserLeaderboard[]> = ref([
-  {
-    position: 1,
-    username: 'user1',
-    score: 100,
-  },
-  {
-    position: 2,
-    username: 'user2',
-    score: 90,
-  },
-  {
-    position: 3,
-    username: 'user3',
-    score: 60,
-  },
-  {
-    position: 4,
-    username: 'user4',
-    score: 10,
-  },
-]);
+const limit = 10; // Number of entries per page
 
+const page = ref(1);
+const { data, pending, error } = useFetch<Leaderboard>(
+  "http://localhost:5000/leaderboard",
+  { query: { page, limit } }
+);
+
+// map the position of the user in the leaderboard
+const leaderboard = computed(() => {
+  if (!data.value?.leaderboard) return [];
+
+  const initialPosition = (page.value - 1) * limit;
+  return data.value.leaderboard.map((entry, index) => ({
+    ...entry,
+    position: index + initialPosition + 1,
+  }));
+});
+
+// calculate the max page based on the total number of entries
+const max_page = computed(() => {
+  if (!data.value?.total) return 1;
+  const max_page = Math.ceil(data.value.total / limit);
+  // Make sure the page is never higher than the max page
+  page.value = Math.min(page.value, max_page);
+  return max_page;
+});
 </script>
