@@ -10,14 +10,16 @@
         <!-- Navbar links -->
         <div class="hidden sm:flex">
             <div>
-                <NuxtLink to="/challenges" class="btn btn-ghost normal-case text-xl text-white"
+                <NuxtLink
+                    to="/hacking"
+                    class="btn btn-ghost normal-case text-xl text-white hover:text-accent"
                     >Challenges</NuxtLink
                 >
             </div>
             <div>
                 <NuxtLink
                     to="/leaderboard"
-                    class="btn btn-ghost normal-case text-xl text-white"
+                    class="btn btn-ghost normal-case text-xl text-white hover:text-accent"
                     >Leaderboards</NuxtLink
                 >
             </div>
@@ -43,10 +45,19 @@
                 tabindex="0"
                 class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
             >
-                <li><NuxtLink to="/challenges">Challenges</NuxtLink></li>
-                <li><NuxtLink to="/leaderboard">Leaderboards</NuxtLink></li>
+                <li>
+                    <NuxtLink to="/hacking"
+                        ><Icon name="game-icons:laptop" /> Challenges</NuxtLink
+                    >
+                </li>
+                <li>
+                    <NuxtLink to="/leaderboard"
+                        ><Icon name="ic:round-leaderboard" /> Leaderboards</NuxtLink
+                    >
+                </li>
             </ul>
         </div>
+        <!-- Dark/light mode toggle -->
         <label class="swap swap-rotate text-white">
             <input type="checkbox" @click="themeStore.toggleTheme()" />
             <!-- sun icon -->
@@ -81,9 +92,7 @@
                 class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
             >
                 <li v-if="user">
-                    <a @click="userStore.logout()"
-                        ><Icon name="material-symbols:logout" /> Logout</a
-                    >
+                    <a @click="logout()"><Icon name="material-symbols:logout" /> Logout</a>
                 </li>
                 <li v-else>
                     <NuxtLink to="/login"
@@ -107,6 +116,9 @@
 
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 defineProps({
     title: {
@@ -114,6 +126,11 @@ defineProps({
         default: "AmazingCTF",
     },
 });
+
+const logout = () => {
+    userStore.logout();
+    router.push("/");
+};
 
 const userStore = useUserStore();
 const themeStore = useThemeStore();

@@ -1,27 +1,10 @@
 version: "3"
 
 services:
-  frontend:
-    container_name: frontend
-    restart: always
-    build:
-      context: "./frontend"
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./data:/app/data
-
-  hacking:
-    container_name: hacking
-    build:
-      context: "./hacking"
-    ports:
-      - "4000:4000"
-
   database:
     image: 'mongo'
     container_name: database
-    restart: always
+    # restart: always
     environment: 
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=test
@@ -32,7 +15,7 @@ services:
 
   backend:
     container_name: backend
-    restart: always
+    # restart: always
     build:
       context: "./backend"
     ports:
@@ -48,3 +31,24 @@ services:
       - DB_PASSWORD=test
     depends_on:
       - database
+
+  frontend:
+    container_name: frontend
+    # restart: always
+    build:
+      context: "./frontend"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - backend
+
+  hacking:
+    container_name: hacking
+    build:
+      context: "./hacking"
+    ports:
+      - "4000:4000"
+    depends_on:
+      - backend

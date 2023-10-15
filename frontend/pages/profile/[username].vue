@@ -23,7 +23,12 @@
 </template>
   
 
+<!--Maybe use something like this to display some cool stats: https://daisyui.com/components/stat/-->
 <script lang="ts" setup>
+useHead({
+    title: "Profile",
+});
+
 import { useRoute } from "vue-router";
 import { User } from "@/types"
 import { ref } from 'vue';
