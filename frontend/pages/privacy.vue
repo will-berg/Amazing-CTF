@@ -1,6 +1,6 @@
 <!-- Privacy policy page -->
 <template>
-	<div class="">
+	<div class="p-8">
     	<ContentDoc class="prose max-w-none"/>
 	</div>
 </template>

@@ -1,27 +1,34 @@
 <template>
-  <div class="bg-gray-50 grid grid-cols-3 gap-4">
-    <button class="btn btn-outline" :disabled="page === 1" @click="page--">
+  <div class="grid grid-cols-3 gap-4 bg-base-200">
+    <button class="btn btn-outline" :disabled="page === 1" @click="$emit('update:page', page - 1)">
       Previous
     </button>
-    <div class="flex justify-center items-center text-gray-900">
-      <span class="font-bold">{{ page }}</span>
-      <span>/{{ maxPage }}</span>
+    <div class="flex justify-center items-center">
+      <input class="input bg-base-200 w-20 text-center hover:border-red-500 hover:border-spacing-1" type="number" min="1"
+        :max="max_page" :value="page" @input="$emit('update:page', limit(($event.target as HTMLInputElement).value))">
+      <!-- Horizontal line -->
+      <div class="border-l-2 border-gray-500 h-full px-6"></div>
+      <div class="text-center pr-6">{{ max_page }}</div>
     </div>
-    <button class="btn btn-outline" :disabled="page === maxPage" @click="page++">
+    <button class="btn btn-outline" :disabled="page === max_page" @click="$emit('update:page', page + 1)">
       Next
     </button>
   </div>
 </template>
 
 <script lang="ts" setup>
-const { page, maxPage } = defineProps({
-  page: {
-    type: Number,
-    required: true,
-  },
-  maxPage: {
-    type: Number,
-    required: true,
-  },
-});
+const { page, max_page } = defineProps<{
+  page: number;
+  max_page: number;
+}>();
+
+const maxPageString = max_page.toString();
+function limit(value: string): string {
+  const num = parseInt(value);
+  if (Number.isNaN(num) || num < 1) return "1";
+  if (num > max_page) return maxPageString;
+  return value;
+}
+
+defineEmits(["update:page"]);
 </script>
