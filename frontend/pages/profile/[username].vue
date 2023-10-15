@@ -1,10 +1,8 @@
 <template>
-  <div class="flex flex-col items-center justify-center h-screen">
     <div>
       <div v-if="user" class="flex flex-col items-center text-center">
         <ProfileImg 
-        :key="rerender"
-        :image="image" 
+        :image="imageUrl" 
         @openUploadProfileImage="openUploadProfileImage"
         />
         <hr class="w-96 h-1 mx-auto my-4 bg-green-100 border-0 rounded md:my-10 dark:bg-gray-700">
@@ -13,13 +11,12 @@
         <hr class="w-96 h-1 mx-auto my-4 bg-green-100 border-0 rounded md:my-10 dark:bg-gray-700">
         <ProfileCompletedHacks :hacks="user.completedHacks" />
         <ProfileUploadImage 
-        class="modal-overlay"
         :openModal="open"
+        @closeModal="closeUploadProfileImage"
         @uploadImage="uploadProfileImage"
         />
       </div>
     </div>
-  </div>
 </template>
   
 
@@ -30,9 +27,9 @@ import { ref } from 'vue';
 import { storeToRefs } from "pinia";
 
 const store = useUserStore()
-const image = ref<string>("");
+const imageUrl = ref<string>("");
 const open = ref<boolean>(false);
-const rerender = ref<string>("");
+const imageKey = ref<number>(0);
 //const { user } = storeToRefs(store);
 
 
@@ -43,15 +40,11 @@ const user: User = ref<User>({
   points: 175, 
 });
 
-
-const queryParams = new URLSearchParams({ username: user.value.username });
+const queryParams = new URLSearchParams();
+queryParams.append('username', user.value.username);
+queryParams.append('date', Date.now().toString());
 const url = `http://localhost:5000/profile?${queryParams.toString()}`;
-image.value = url;
-
-const openUploadProfileImage = ():void => {
-  console.log("click was registered")
-  open.value = true
-}
+imageUrl.value = url;
 
 const uploadProfileImage = async (image: File | null):Promise<void> => {
   open.value = false
@@ -71,32 +64,24 @@ const uploadProfileImage = async (image: File | null):Promise<void> => {
         body: formData
     }
   )
-  // window.location.reload()
-  
-  if(responseData.value){
-    forceRender()
-    console.log('refreshing')
-  }
+    if(responseData.value){
+      const queryParams = new URLSearchParams();
+      queryParams.append('username', user.value.username);
+      queryParams.append('date', Date.now().toString());
+      const url = `http://localhost:5000/profile?${queryParams.toString()}`;
+      imageUrl.value = url;
+    }
 }
 
-const forceRender = () => {
-  rerender.value = "asdaölsdöaslmd";
-  console.log('rerender triggered');
-};
+const openUploadProfileImage = () : void => {
+  open.value = true
+}
+
+const closeUploadProfileImage = () : void => {
+  open.value = false;
+}
 
 </script>
 
 <style>
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
-  z-index: 1000; /* Higher z-index to bring it to the front */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 </style>

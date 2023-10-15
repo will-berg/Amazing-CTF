@@ -177,7 +177,9 @@ router.get('/', (_req, res) => {
         };
     });
 
-    res.send(challengesWithImages);
+    setTimeout(() => {
+      res.send(challengesWithImages);
+    }, 5000); // 5000 milliseconds = 5 seconds
   }
 )
 // GET all challenges
@@ -187,12 +189,26 @@ router.get('/', (_req, res) => {
 // });
 
 // GET a single challenge
-router.get("/:id", async (req, res) => {
-  let challenge = await get_challenge(req, res);
-  if (!challenge) return;
+// router.get("/:id", async (req, res) => {
+//   console.log("GETTING SINGLE ", req.params.id)
+//   let challenge = await get_challenge(req, res);
+//   if (!challenge) return;
 
-  res.send(challenge);
+//   res.send(challenge);
+// });
+
+router.get("/:id", async (req, res) => {
+  console.log("GETTING SINGLE ", req.params.id)
+  const challenge = challenges.find(c => c.id === parseInt(req.params.id, 10))
+  console.log("Challenge: " , challenge)
+
+  if(challenge){
+    res.send(challenge);
+  } else {
+    res.status(404).json({message:`No hack with id: ${req.params.id}`})
+  }
 });
+
 
 function handle_post_error(errCode, errMsg, req, res) {
   // Delete the image

@@ -1,21 +1,22 @@
 <template>
-    <div :key="key" @click="$emit('openUploadProfileImage')">
+    <div @click="$emit('openUploadProfileImage')"> 
         <NuxtImg
-          v-if="image"
-          class="bg-white rounded-full"
-          width="256"
-          height="150"
-          :src="image"
-          :preload="true"
-        />
+            v-if="image"
+            class="bg-white rounded-full"
+            width="256"
+            height="150"
+            :src="image"
+          />
     </div>
   </template>
   <script lang="ts" setup>
   defineProps<{
     image: string,
-    key: string,
   }>();
   defineEmits<{
     openUploadProfileImage: []
   }>();
 </script>
+
+<style scoped>
+</style>

@@ -1,18 +1,17 @@
 <template>
-  <div v-if="openModal">
-    <div v-if="hack">
-      <dialog :open="isOpen" class="modal">
-        <div class="modal-box">
-          <h3 class="font-bold text-lg">{{ hack.title }}</h3>
-          <p class="py-4">{{ hack.description }}</p>
-          <div class="modal-action">
-            <NuxtLink :to="'/hackInfo/' + hack.id" class="btn btn-primary rounded-full">Select</NuxtLink>
+    <dialog v-if="openModal" id="my_modal_1" :class="{'modal' : true, 'modal-open': openModal}">
+      <div v-if="hack" class="modal-box">
+        <h3 class="font-bold text-lg">{{ hack.title }}</h3>
+        <p class="py-4">{{ hack.description }}</p>
+        <div class="modal-action">
+          <NuxtLink :to="'/hackInfo/' + hack.id" class="btn btn-primary rounded-full">Select</NuxtLink>
+          <form method="dialog">
+            <!-- if there is a button in form, it will close the modal -->
             <button class="btn btn-primary rounded-full" @click="$emit('closeModal')">Close</button>
-          </div>
+          </form>
         </div>
-      </dialog>
-    </div>
-  </div>
+      </div>
+    </dialog>
 </template>
   
   <script lang="ts" setup>

@@ -1,8 +1,10 @@
+const fs = require('fs');
+const path = require('path');
 const multer = require('multer');
-const fs = require('fs'); // Node.js filesystem module
 
-const storage = multer.diskStorage({
-  destination: 'files/',
+// Define the storage configuration for profile images
+const profileImageStorage = multer.diskStorage({
+  destination: 'files/', // Set your destination path
   filename: (req, file, cb) => {
     const username = req.body.username;
     const newFilename = `${username}_profile_image.png`;
@@ -10,15 +12,21 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage });
+// Create a multer instance for handling profile image uploads
+const profileImageUpload = multer({ storage: profileImageStorage });
 
-const uploadProfileImage = upload.single('image');
+// Create a custom middleware for replacing the old profile image
+const replaceProfileImage = (req, res, next) => {
+  const username = req.body.username;
+  const oldImageFilePath = path.join('files', `${username}_profile_image.png`);
 
-const removeProfileImage = (username) => {
-  const filePath = `files/${username}_profile_image.png`;
-  if (fs.existsSync(filePath)) {
-    fs.unlinkSync(filePath);
+  // Check if there is an old image, and if so, remove it
+  if (fs.existsSync(oldImageFilePath)) {
+    fs.unlinkSync(oldImageFilePath);
   }
+
+  // Continue with the next middleware or route handler
+  next();
 };
 
-module.exports = { uploadProfileImage, removeProfileImage };
+module.exports = { profileImageUpload, replaceProfileImage };

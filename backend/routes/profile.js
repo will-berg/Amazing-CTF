@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { uploadProfileImage } = require('../middlewares/profile');
+const { profileImageUpload, replaceProfileImage } = require('../middlewares/profile.js');
 const path = require('path');
 const fs = require('fs');
 
@@ -34,20 +34,20 @@ router.get('/', async (req, res) => {
 });
   
 
-router.post('/image', uploadProfileImage, async (req, res) => {
+router.post('/image', replaceProfileImage, profileImageUpload.single('image'), (req, res) => {
   if (!req.file) {
     console.log("No file selected");
     return res.status(400).json({ error: 'No image selected' });
   }
 
-  const username = req.body.username;
-  removeProfileImage(username);
+  // Additional processing if needed
 
   console.log("Image file: ", req.file);
 
   // Return a success message
   return res.status(200).json({ message: 'Profile image was updated' });
 });
+
 
 
 

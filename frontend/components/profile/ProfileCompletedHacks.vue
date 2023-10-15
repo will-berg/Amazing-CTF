@@ -1,20 +1,18 @@
 <template>
-    <div>
-      <div v-if="hacks" class="card w-96 bg-base-100 shadow-xl">
-        <div class="card-body">
-          <h2 class="card-title">Completed Hacks</h2>
-          <ul>
+  <div class="card w-96 bg-base-100 shadow-xl">
+  <div class="card-body">
+    <h2 class="card-title">Completed Hacks!</h2>
+    <ul v-if="hacks">
             <li v-for="hack in hacks" :key="hack">
-              <div class="completed-hack">
+              <div class="flex items-center justify-between">
                 {{ hack }}
                 <span class="badge badge-success">✓</span>
               </div>
             </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </template>
+    </ul>
+  </div>
+</div>
+</template>
   
   <script lang="ts" setup>
   import { defineProps } from 'vue';
@@ -25,9 +23,4 @@
   </script>
   
 <style scoped>
-.completed-hack {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
 </style>

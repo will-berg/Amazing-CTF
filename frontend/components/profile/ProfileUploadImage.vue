@@ -1,14 +1,15 @@
 <template>
-    <div v-if="openModal">
-        <dialog :open="isOpen" class="modal">
-            <div class="modal-box">
-                <input class="input" type="file" @change="fileChanged"/>
-                <div class="modal-action">
-                <button class="btn btn-primary rounded-full" @click="$emit('uploadImage', selectedFile)">Upload</button>
-                </div>
-            </div>
-        </dialog>
+  <dialog v-if="openModal" id="my_modal_1" :class="{'modal' : true, 'modal-open': openModal}">
+    <div class="modal-box">
+      <div class="modal-action">
+        <input class="input" type="file" @change="fileChanged"/>
+        <button class="btn btn-primary rounded-full" @click="$emit('uploadImage', selectedFile)">Upload</button>
+        <form method="dialog">
+          <button class="btn btn-primary rounded-full" @click="$emit('closeModal')">Close</button>
+        </form>
+      </div>
     </div>
+  </dialog>
 </template>
   
 <script lang="ts" setup>
@@ -30,15 +31,15 @@ const props = defineProps<{
 
 defineEmits<{
       uploadImage: (selectedFile: File) => void;
+      closeModal: [];
 }>();
 
 
 watchEffect(() => {
     if (props.openModal) {
       isOpen.value = true;
-      selectedFile.value = null
     } else {
-        isOpen.value = false;
+      isOpen.value = false;
     }
   });
 
