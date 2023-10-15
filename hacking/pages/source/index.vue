@@ -1,6 +1,6 @@
 <template>
     <div>
-        <!-- Well done! Navigate to /dirBust/giveMeMyPoints and you shall have your points! -->
+        <!-- Dont forget to get rid of the old about page /source/aboutOld -->
         <p>Nothing to see here!</p>
     </div>
 </template>

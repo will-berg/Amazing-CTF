@@ -2,7 +2,7 @@
   <dialog v-if="openModal" id="my_modal_1" :class="{'modal' : true, 'modal-open': openModal}">
     <div class="modal-box">
       <div class="modal-action">
-        <input class="input" type="file" @change="fileChanged"/>
+        <input type="file"  class="file-input w-full max-w-xs" @change="fileChanged"/>
         <button class="btn btn-primary rounded-full" @click="$emit('uploadImage', selectedFile)">Upload</button>
         <form method="dialog">
           <button class="btn btn-primary rounded-full" @click="$emit('closeModal')">Close</button>

@@ -20,9 +20,6 @@ const { theme } = storeToRefs(themeStore);
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
 
-const hackStore = useHackStore();
-const { hacks } = storeToRefs(hackStore);
-
 
 onMounted(() => {
     if (localStorage.getItem("theme")) {
@@ -30,9 +27,6 @@ onMounted(() => {
     }
     if (localStorage.getItem("user")) {
         user.value = JSON.parse(localStorage.getItem("user")!);
-    }
-    if (localStorage.getItem("hacks")){
-        hacks.value = JSON.parse(localStorage.getItem("hacks")!);
     }
 });
 
@@ -43,9 +37,5 @@ watch(theme, (themeVal) => {
 watch(user, (userVal) => {
     localStorage.setItem("user", JSON.stringify(userVal));
 });
-
-watch(hacks, (hacksVal) => {
-    localStorage.setItem("hacks", JSON.stringify(hacksVal));
-})
 
 </script>

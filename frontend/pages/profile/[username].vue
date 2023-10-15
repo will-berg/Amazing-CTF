@@ -1,7 +1,10 @@
 <template>
     <div>
       <div v-if="user" class="flex flex-col items-center text-center">
+        <div v-if="error"><AlertError :errorMessage="error"></AlertError></div>
+        <div v-if="pending"><AlertLoading></AlertLoading></div>
         <ProfileImg 
+        v-else
         :image="imageUrl" 
         @openUploadProfileImage="openUploadProfileImage"
         />
@@ -30,6 +33,9 @@ const store = useUserStore()
 const imageUrl = ref<string>("");
 const open = ref<boolean>(false);
 const imageKey = ref<number>(0);
+
+const error = ref(null);
+const pending = ref<boolean>(false);
 //const { user } = storeToRefs(store);
 
 
@@ -40,37 +46,50 @@ const user: User = ref<User>({
   points: 175, 
 });
 
-const queryParams = new URLSearchParams();
-queryParams.append('username', user.value.username);
-queryParams.append('date', Date.now().toString());
-const url = `http://localhost:5000/profile?${queryParams.toString()}`;
-imageUrl.value = url;
 
-const uploadProfileImage = async (image: File | null):Promise<void> => {
-  open.value = false
-  console.log("Image", image)
+imageUrl.value = generateProfileImageUrl(user.value.username);
+
+
+const uploadProfileImage = async (image: File | null): Promise<void> => {
+  open.value = false;
+  console.log("Image", image);
+
   if (!image) {
-    console.error("No image selected");
+    error.value = "No image selected";
     return;
   }
+
+  // Perhaps manually show spinner as we start to upload?
+  pending.value = true; 
+
   const formData = new FormData();
   formData.append('username', user.value.username);
   formData.append('image', image, `${user.value.username}_profile_image.png`);
 
-  const { data: responseData, error, pending } = await useFetch(
-    'http://localhost:5000/profile/image', 
+  const { data: responseData, error: uploadError, pending: uploadPending } = await useFetch(
+    'http://localhost:5000/profile/image',
     {
-        method: 'post',
-        body: formData
+      method: 'post',
+      body: formData
     }
-  )
-    if(responseData.value){
-      const queryParams = new URLSearchParams();
-      queryParams.append('username', user.value.username);
-      queryParams.append('date', Date.now().toString());
-      const url = `http://localhost:5000/profile?${queryParams.toString()}`;
-      imageUrl.value = url;
-    }
+  );
+
+  if (responseData.value) {
+    imageUrl.value = generateProfileImageUrl(user.value.username);
+  } else if (uploadError.value) {
+    error.value = "Error uploading the image"; 
+  }
+
+  pending.value = uploadPending.value; 
+};
+
+
+
+function generateProfileImageUrl(username: string): string {
+  const queryParams = new URLSearchParams();
+  queryParams.append('username', username);
+  queryParams.append('date', Date.now().toString());
+  return `http://localhost:5000/profile?${queryParams.toString()}`;
 }
 
 const openUploadProfileImage = () : void => {

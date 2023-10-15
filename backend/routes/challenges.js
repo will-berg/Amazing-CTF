@@ -36,30 +36,34 @@ const challenges = [
     {
         id: 1,
         title: 'ReDos',
-        description: 'Regular Expression Denial of Service (ReDos)...Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-        informationPage: 'Here is a bunch of information on redos',
+        name: 'redos',
+        description: 'In this hack you get to practice Regular Expression Denial of Service (ReDos)',
+        informationPage: 'The Regular expression Denial of Service (ReDoS) is a Denial of Service attack, that exploits the fact that most Regular Expression implementations may reach extreme situations that cause them to work very slowly (exponentially related to input size).<br><br>An attacker can then cause a program using a Regular Expression (Regex) to enter these extreme situations and then hang for a very long time. The attacker might use the above knowledge to look for applications that use Regular Expressions, containing an Evil Regex, and send a well-crafted input, that will hang the system.<br><br>Alternatively, if a Regex itself is affected by a user input, the attacker can inject an Evil Regex, and make the system vulnerable.',
         imageUrl: '/images/regex.png',
         points: 100,
     },
     {
         id: 2,
-        title: 'SQLInjection',
-        description: 'Regular Expression Denial of Service (ReDos)...Lorem Ipsum is simply dummy text o standard dummy text ever since the 1500s, when an unknown printer',
-        informationPage: '',
-        imageUrl: '/images/injection.png',
+        title: 'XSS-Easy',
+        name: 'xsseasy',
+        description: 'In this hack you get to practice injecting a simple script into a web page.',
+        informationPage: 'Cross-Site Scripting (XSS) attacks are a type of injection, in which malicious scripts are injected into otherwise benign and trusted websites. XSS attacks occur when an attacker uses a web application to send malicious code, generally in the form of a browser side script, to a different end user. Flaws that allow these attacks to succeed are quite widespread and occur anywhere a web application uses input from a user within the output it generates without validating or encoding it.<br><br>An attacker can use XSS to send a malicious script to an unsuspecting user. The end user’s browser has no way to know that the script should not be trusted, and will execute the script. Because it thinks the script came from a trusted source, the malicious script can access any cookies, session tokens, or other sensitive information retained by the browser and used with that site. These scripts can even rewrite the content of the HTML page. ',
+        imageUrl: '/images/xss.png',
         point: 200,
     },
     {
         id: 3,
-        title: 'Deserialization',
+        title: 'XSS-Medium',
+        name: 'xssmedium',
         description: 'Regular Expression Denial of Service (ReDos)...Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printert to make a type specimen book.',
-        informationPage: '',
-        imageUrl: '/images/serialize.png',
+        informationPage: 'Cross-Site Scripting (XSS) attacks are a type of injection, in which malicious scripts are injected into otherwise benign and trusted websites. XSS attacks occur when an attacker uses a web application to send malicious code, generally in the form of a browser side script, to a different end user. Flaws that allow these attacks to succeed are quite widespread and occur anywhere a web application uses input from a user within the output it generates without validating or encoding it.<br><br>An attacker can use XSS to send a malicious script to an unsuspecting user. The end user’s browser has no way to know that the script should not be trusted, and will execute the script. Because it thinks the script came from a trusted source, the malicious script can access any cookies, session tokens, or other sensitive information retained by the browser and used with that site. These scripts can even rewrite the content of the HTML page. ',
+        imageUrl: '/images/xss.png',
         points: 150,
     },
     {
         id: 4,
-        title: 'XSS',
+        title: 'Password',
+        name: 'password',
         description: 'Regular Expression Denial of Service (ReDos)...',
         informationPage: '',
         imageUrl: '/images/xss.png',
@@ -67,18 +71,11 @@ const challenges = [
     },
     {
         id: 5,
-        title: 'Prototype Pollution',
-        description: 'Regular Expression Denial of Service (ReDos)...Lorem Ipsum is simply dummy text of the printi',
-        informationPage: '',
-        imageUrl: '/images/pollution.png',
-        points: 100,
-    },
-    {
-        id: 5,
-        title: 'Something',
-        description: 'Regular Expression Denial of Service (ReDos)...Lorem Ipsum is simply dummy text of the printi',
-        informationPage: '',
-        imageUrl: '/images/injection.png',
+        title: 'Hidden',
+        name: 'source',
+        description: 'This hack checks if you know where to look for hidden information!',
+        informationPage: 'Sometimes developers leave traces of old code and comments that contain sensitive information. Penetration testers often look for these comments or any lingering endpoints that is part of old code. They have many tools at their disposal that they can use to perform actions known as directory busting. Directory busting entails that hackers or penetration testers enumerates a large number of possible endpoints.',
+        imageUrl: '/images/hidden.png',
         points: 100,
     },
   ]
@@ -177,9 +174,7 @@ router.get('/', (_req, res) => {
         };
     });
 
-    setTimeout(() => {
-      res.send(challengesWithImages);
-    }, 5000); // 5000 milliseconds = 5 seconds
+    res.send(challengesWithImages);
   }
 )
 // GET all challenges
