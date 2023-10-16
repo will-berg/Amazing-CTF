@@ -18,7 +18,7 @@
                 </div>
                 <button class="btn btn-outline w-40" @click="newPost()">Post</button>
                 <div class="chat chat-start" v-for="(entry, index) in posts" :key="index">
-                    <div class="chat-bubble font-bold ">Diary entry #{{index + 1}}: {{ entry }}</div>
+                    <div class="chat-bubble font-bold">Diary entry #{{index + 1}}: {{ entry }}</div>
                 </div>
 
             </div>
