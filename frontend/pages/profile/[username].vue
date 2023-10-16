@@ -47,6 +47,7 @@ const error = ref(null);
 const pending = ref<boolean>(false);
 const { user } = storeToRefs(store);
 
+console.log("user ", user)
 
 // const user: User = ref<User>({
 //   email: "example@example.com",
