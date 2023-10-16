@@ -3,7 +3,6 @@ const favicon = require("serve-favicon");
 const path = require("path");
 const profileRoute = require("./routes/profile");
 const cors = require("cors");
-const mongoose = require("mongoose");
 
 const db = require("./config/db");
 const createData = require("./init/createData");
@@ -47,10 +46,7 @@ app.use(`${rootPath}/leaderboard`, leaderboardRoute);
 // Start server but first connect to database
 async function startServer() {
   try {
-    while (mongoose.connection.readyState !== 1) {
-      console.log("Connecting to database...");
-      await db();
-    }
+    await db();
     // Create data if it doesn't exist
     await createData();
     app.listen(port, () => console.log(`Server is running on port: ${port}`));
