@@ -13,7 +13,6 @@
 <script lang="ts" setup>
 defineProps<{
   image: string,
-  date: Date,
 }>();
 
 defineEmits<{

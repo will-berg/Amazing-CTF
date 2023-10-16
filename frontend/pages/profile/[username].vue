@@ -7,7 +7,7 @@
       <div v-if="pending">
         <AlertLoading></AlertLoading>
       </div>
-      <ProfileImg v-else :image="imageUrl" :date="date" @openUploadProfileImage="openUploadProfileImage" />
+      <ProfileImg v-else :image="imageUrl" @openUploadProfileImage="openUploadProfileImage" />
       <hr class="w-96 h-1 mx-auto my-4 bg-green-100 border-0 rounded md:my-10 dark:bg-gray-700">
       <h2>{{ user.username }}</h2>
       <h4>Total Score: {{ user.points }}</h4>
@@ -35,26 +35,19 @@ definePageMeta({
 const store = useUserStore()
 const imageUrl = ref<string>("");
 const open = ref<boolean>(false);
-const imageKey = ref<number>(0);
 
-const error = ref(null);
+const error: Ref<null | string> = ref(null);
 const pending = ref<boolean>(false);
 const { user } = storeToRefs(store);
 
 console.log("user ", user)
 
-// const user: User = ref<User>({
-//   email: "example@example.com",
-//   username: "Regularclip",
-//   completedHacks: ['SQLInject', 'ReDos', 'XSS-easy', 'XSS-hard'],
-//   points: 175, 
-// });
-
-
-imageUrl.value = generateProfileImageUrl(user.username);
-
-
 const uploadProfileImage = async (image: File | null): Promise<void> => {
+  if (!user.value) {
+    error.value = "No user found";
+    return;
+  }
+
   open.value = false;
   console.log("Image", image);
 
@@ -67,8 +60,8 @@ const uploadProfileImage = async (image: File | null): Promise<void> => {
   pending.value = true;
 
   const formData = new FormData();
-  formData.append('username', user.username);
-  formData.append('image', image, `${user.username}_profile_image.png`);
+  formData.append('username', user.value.username);
+  formData.append('image', image, `${user.value.username}_profile_image.png`);
 
   const { data: responseData, error: uploadError, pending: uploadPending } = await useFetch(
     'http://localhost:5000/profile/image',
@@ -79,14 +72,13 @@ const uploadProfileImage = async (image: File | null): Promise<void> => {
   );
 
   if (responseData.value) {
-    imageUrl.value = generateProfileImageUrl(user.username);
+    imageUrl.value = generateProfileImageUrl(user.value.username);
   } else if (uploadError.value) {
     error.value = "Error uploading the image";
   }
 
   pending.value = uploadPending.value;
 };
-
 
 
 function generateProfileImageUrl(username: string): string {
