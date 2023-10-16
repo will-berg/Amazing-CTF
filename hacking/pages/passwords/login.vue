@@ -9,16 +9,19 @@
             </div>
         </div>
 
-        <div class="flex flex-col gap-3 ">
+        <div class="flex flex-col gap-3 mt-5">
+            <button class="btn btn-primary" @click="navigateTo('/passwords/leak')">Back to account details</button>
             <h1>Login with secret password</h1>
-            <input v-model="username" type="text" placeholder="Type here" class="input input-bordered w-full max-w-xs" />
-            <input v-model="password" type="text" placeholder="Type here" class="input input-bordered w-full max-w-xs" />
-            <button class="btn">Test Login</button>
+            <input v-model="username" type="text" placeholder="Username" class="input input-bordered w-full max-w-xs" />
+            <input v-model="password" type="password" placeholder="Password" class="input input-bordered w-full max-w-xs" />
+            <button class="btn" @click="login">Test Login</button>
         </div>
-
-        <div v-if="success">
-            <SuccessCard points="5" hackName="Passwords" />
+        <div v-if="wrongCred">
+            <p class="text-red-500">Wrong username or password!</p>
         </div>
+        <dialog id="my_modal_3" class="modal modal-open" v-if="success">
+            <SuccessCard points="10" hackName="Passwords" />
+    </dialog>
     </div>
 </template>
 
@@ -26,12 +29,13 @@
 const username = ref<string>("");
 const password = ref<string>("");
 const success = ref<boolean>(false);
+const wrongCred = ref<boolean>(false);
 const login: () => void = () => {
-    if (username.value === "admin" && password.value === "admin") {
-        alert("You have been logged in!");
+    if (username.value === "InternAccount" && password.value === "GoodJob") {
+        wrongCred.value = false;
         success.value = true;
     } else {
-        alert("Wrong username or password!");
+        wrongCred.value = true;
     }
 }
 </script>
