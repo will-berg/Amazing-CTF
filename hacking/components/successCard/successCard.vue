@@ -8,7 +8,7 @@
       <h2 class="text-xl font-semibold">Success!</h2>
       <p class="text-gray-700 text-center">You have succesfully finished the {{ hackName }} hack and have been awarded {{ points }}
         points if this is your first time completing this task!</p>
-      <button class="btn btn-primary">Return</button>
+      <button class="btn btn-primary" @click="navigateTo('/')">Return</button>
     </div>
   </div>
 </template>
