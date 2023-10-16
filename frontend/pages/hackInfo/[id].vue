@@ -17,6 +17,9 @@
   import { useRoute } from "vue-router";
   import { HackDetails } from "~/types";
 
+  definePageMeta({
+    middleware: ["authenticate"]
+  })
   const { id } = useRoute().params;
   
   // Show appropriate error message
@@ -34,5 +37,3 @@ const navTo = (name: string) => {
 }
 
  </script>
-
- <style></style>

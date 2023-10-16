@@ -1,9 +1,13 @@
-export default defineNuxtRouteMiddleware(async (to, from) => {
-    const currentUser = await getCurrentUser()
+import { storeToRefs } from "pinia";
 
-    //with this we can restrict access to routes
-    if(!currentUser){
-        return navigateTo('/login')
-    }
-}
-)
+export default defineNuxtRouteMiddleware(async (to, from) => {
+  const userStore = useUserStore();
+  const { user } = storeToRefs(userStore);
+
+  if (!user) {
+    return navigateTo('/login');
+  }
+});
+
+
+

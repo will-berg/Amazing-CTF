@@ -29,6 +29,10 @@ useHead({
     title: "Profile",
 });
 
+definePageMeta({
+  middleware: ["authenticate"]
+})
+
 import { useRoute } from "vue-router";
 import { User } from "@/types"
 import { ref } from 'vue';
