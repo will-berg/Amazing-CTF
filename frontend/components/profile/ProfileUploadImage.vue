@@ -1,8 +1,8 @@
 <template>
-  <dialog v-if="openModal" id="my_modal_1" :class="{'modal' : true, 'modal-open': openModal}">
+  <dialog v-if="openModal" id="my_modal_1" :class="{ 'modal': true, 'modal-open': openModal }">
     <div class="modal-box">
       <div class="modal-action">
-        <input type="file"  class="file-input w-full max-w-xs" @change="fileChanged"/>
+        <input type="file" class="file-input w-full max-w-xs" @change="fileChanged" />
         <button class="btn btn-primary rounded-full" @click="$emit('uploadImage', selectedFile)">Upload</button>
         <form method="dialog">
           <button class="btn btn-primary rounded-full" @click="$emit('closeModal')">Close</button>
@@ -26,22 +26,22 @@ const fileChanged = (event: Event) => {
 };
 
 const props = defineProps<{
-    openModal: boolean
+  openModal: boolean
 }>();
 
 defineEmits<{
-      uploadImage: (selectedFile: File) => void;
-      closeModal: [];
+  (event: "uploadImage", selectedFile: File): void;
+  (event: "closeModal"): void;
 }>();
 
 
 watchEffect(() => {
-    if (props.openModal) {
-      isOpen.value = true;
-    } else {
-      isOpen.value = false;
-    }
-  });
+  if (props.openModal) {
+    isOpen.value = true;
+  } else {
+    isOpen.value = false;
+  }
+});
 
 
 </script>
