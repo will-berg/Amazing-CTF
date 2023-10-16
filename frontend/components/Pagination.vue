@@ -22,13 +22,14 @@ const { page, max_page } = defineProps<{
   max_page: number;
 }>();
 
-const maxPageString = max_page.toString();
-function limit(value: string): string {
+function limit(value: string): number {
   const num = parseInt(value);
-  if (Number.isNaN(num) || num < 1) return "1";
-  if (num > max_page) return maxPageString;
-  return value;
+  if (Number.isNaN(num) || num < 1) return 1;
+  if (num > max_page) return max_page;
+  return num;
 }
 
-defineEmits(["update:page"]);
+defineEmits<{
+  (event: "update:page", page: number): void;
+}>();
 </script>
