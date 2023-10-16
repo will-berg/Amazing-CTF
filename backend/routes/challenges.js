@@ -84,6 +84,20 @@ router.get("/:id", async (req, res) => {
   res.send(challenge);
 });
 
+router.get("/:id", async (req, res) => {
+  console.log("GETTING SINGLE ", req.params.id);
+  const challenge = challenges.find(
+    (c) => c.id === parseInt(req.params.id, 10)
+  );
+  console.log("Challenge: ", challenge);
+
+  if (challenge) {
+    res.send(challenge);
+  } else {
+    res.status(404).json({ message: `No hack with id: ${req.params.id}` });
+  }
+});
+
 function handle_post_error(errCode, errMsg, req, res) {
   // Delete the image
   if (req.file?.filename !== undefined) {

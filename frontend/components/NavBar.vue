@@ -11,7 +11,7 @@
         <div class="hidden sm:flex">
             <div>
                 <NuxtLink
-                    to="/hacking"
+                    to="/challenges"
                     class="btn btn-ghost normal-case text-xl text-white hover:text-accent"
                     >Challenges</NuxtLink
                 >
@@ -46,7 +46,7 @@
                 class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
             >
                 <li>
-                    <NuxtLink to="/hacking"
+                    <NuxtLink to="/challenges"
                         ><Icon name="game-icons:laptop" /> Challenges</NuxtLink
                     >
                 </li>

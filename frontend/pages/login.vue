@@ -1,9 +1,9 @@
 <template>
-    <Login />
+  <Login />
 </template>
 
 <script lang="ts" setup>
 useHead({
-    title: "Login",
+  title: "Login",
 });
 </script>

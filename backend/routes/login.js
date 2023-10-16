@@ -34,7 +34,7 @@ router.post("/", async (req, res) => {
       token: token,
     };
 
-    return res.json({ user: userObj });
+    return res.json(userObj);
   } catch (err) {
     res.status(500).json({ error: "Something went wrong", err: err });
   }

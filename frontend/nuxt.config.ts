@@ -18,4 +18,7 @@ export default defineNuxtConfig({
     // Build-time static page generation
     '/': { prerender: true },
   },
+  typescript: {
+    strict: true
+  }
 });

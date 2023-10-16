@@ -27,6 +27,7 @@ const { theme } = storeToRefs(themeStore);
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
 
+
 onMounted(() => {
     if (localStorage.getItem("theme")) {
         theme.value = JSON.parse(localStorage.getItem("theme")!);
@@ -43,4 +44,5 @@ watch(theme, (themeVal) => {
 watch(user, (userVal) => {
     localStorage.setItem("user", JSON.stringify(userVal));
 });
+
 </script>

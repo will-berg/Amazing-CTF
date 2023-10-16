@@ -2,7 +2,7 @@
     <footer class="flex justify-center md:gap-60 footer p-8 bg-base-300">
         <nav>
             <header class="footer-title">Services</header>
-            <NuxtLink to="/hacking" class="hover:shadow-md hover:underline"
+            <NuxtLink to="/challenges" class="hover:shadow-md hover:underline"
                 >Challenges</NuxtLink
             >
             <NuxtLink to="/leaderboard" class="hover:shadow-md hover:underline"

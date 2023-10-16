@@ -1,9 +1,11 @@
 const express = require("express");
 const favicon = require("serve-favicon");
 const path = require("path");
+const profileRoute = require("./routes/profile");
 const cors = require("cors");
 
 const db = require("./config/db");
+const createData = require("./init/createData");
 
 // Create express app
 const app = express();
@@ -38,12 +40,15 @@ app.use(`${rootPath}/challenges`, challengesRoute);
 app.use(`${rootPath}/register`, registerRoute);
 app.use(`${rootPath}/login`, loginRoute);
 app.use(`${rootPath}/submitflag`, submitFlagRoute);
+app.use(`${rootPath}/profile`, profileRoute);
 app.use(`${rootPath}/leaderboard`, leaderboardRoute);
 
 // Start server but first connect to database
 async function startServer() {
   try {
     await db();
+    // Create data if it doesn't exist
+    await createData();
     app.listen(port, () => console.log(`Server is running on port: ${port}`));
   } catch (err) {
     console.error(err);

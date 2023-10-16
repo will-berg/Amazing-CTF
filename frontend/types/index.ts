@@ -1,8 +1,11 @@
 export interface HackDetails {
     id: number;
     title: string;
+    points: number;
     description: string;
-    imageUrl: string;
+    informationPage: string;
+    image: string;
+    url: string;
 }
 
 // Add more properties to the User interface as needed, e.g. points 
