@@ -14,6 +14,9 @@ export const useUserStore = defineStore({
         userEmail(): string {
             return this.user?.email ?? "Anonymous";
         },
+        userToken(): string {
+            return this.user?.token ?? "";
+        },
     },
     // Perform operations on the state
     actions: {
@@ -23,9 +26,11 @@ export const useUserStore = defineStore({
         },
         logout(): void {
             this.user = null;
+            localStorage.removeItem("user");
         },
-        testing(): void {
-            console.log("testing");
+        addPoints(points: number, newHack: string): void {
+            this.user!.points += points;
+            this.user!.completedHacks.push(newHack);
         },
     },
 });
