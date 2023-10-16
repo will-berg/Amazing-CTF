@@ -32,12 +32,15 @@
  const selectedHack = ref<HackDetails | null>(null);
  const open = ref<boolean>(false);
 
- const user: User = ref<User>({
-  email: "example@example.com",
-  username: "Regularclip",
-  completedHacks: ['ReDos', 'Hidden'],
-  points: 175, 
-});
+//  const user: User = ref<User>({
+//   email: "example@example.com",
+//   username: "Regularclip",
+//   completedHacks: ['ReDos', 'Hidden'],
+//   points: 175, 
+// });
+
+const store = useUserStore()
+const { user } = storeToRefs(store);
 
 const {data: hacks, pending: hackPending, error: hackError} = await useFetch<HackDetails[]>(
     'http://localhost:5000/challenges'
@@ -55,10 +58,11 @@ const closeModal = (): void => {
 
 
 const checkCompleted = (hackTitle: string): boolean => {
-  const val = user.value.completedHacks.includes(hackTitle);
-  console.log("hack: ", hackTitle)
-  console.log("is: ", val)
-  return user.value.completedHacks.includes(hackTitle);
+  if(user.completedHacks){
+    return user.completedHacks.includes(hackTitle);
+  } else {
+    return false;
+  }
 };
 
 </script>

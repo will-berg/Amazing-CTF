@@ -41,18 +41,18 @@ const imageKey = ref<number>(0);
 
 const error = ref(null);
 const pending = ref<boolean>(false);
-//const { user } = storeToRefs(store);
+const { user } = storeToRefs(store);
 
 
-const user: User = ref<User>({
-  email: "example@example.com",
-  username: "Regularclip",
-  completedHacks: ['SQLInject', 'ReDos', 'XSS-easy', 'XSS-hard'],
-  points: 175, 
-});
+// const user: User = ref<User>({
+//   email: "example@example.com",
+//   username: "Regularclip",
+//   completedHacks: ['SQLInject', 'ReDos', 'XSS-easy', 'XSS-hard'],
+//   points: 175, 
+// });
 
 
-imageUrl.value = generateProfileImageUrl(user.value.username);
+imageUrl.value = generateProfileImageUrl(user.username);
 
 
 const uploadProfileImage = async (image: File | null): Promise<void> => {
@@ -68,8 +68,8 @@ const uploadProfileImage = async (image: File | null): Promise<void> => {
   pending.value = true; 
 
   const formData = new FormData();
-  formData.append('username', user.value.username);
-  formData.append('image', image, `${user.value.username}_profile_image.png`);
+  formData.append('username', user.username);
+  formData.append('image', image, `${user.username}_profile_image.png`);
 
   const { data: responseData, error: uploadError, pending: uploadPending } = await useFetch(
     'http://localhost:5000/profile/image',
@@ -80,7 +80,7 @@ const uploadProfileImage = async (image: File | null): Promise<void> => {
   );
 
   if (responseData.value) {
-    imageUrl.value = generateProfileImageUrl(user.value.username);
+    imageUrl.value = generateProfileImageUrl(user.username);
   } else if (uploadError.value) {
     error.value = "Error uploading the image"; 
   }
