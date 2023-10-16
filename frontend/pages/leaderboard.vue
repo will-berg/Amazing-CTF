@@ -20,9 +20,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="entry in leaderboard" :key="entry.username" @click="navigateToUserProfile(entry.username)"
-              class="cursor-pointer hover">
-              <td class="border border-l-2 px-4 py-2">
+            <!-- <tr v-for="entry in leaderboard" :key="entry.username" @click="navigateToUserProfile(entry.username)"
+              class="cursor-pointer hover"> -->
+            <!-- Removed link to user profile because it's not capable of handling other users than the logged in user -->
+            <tr v-for="entry in leaderboard" :key="entry.username">
+              <td class="border border-l-2 px-4 py-2" :class="{ 'border-you': entry.username === user?.username }">
                 <div class="flex items-center justify-center">
                   <span v-if="entry.position <= 3">
                     <NuxtImg class="inline-block" width="24" height="24"
@@ -31,10 +33,12 @@
                   <span v-else class="text-lg text-center">{{ entry.position }}</span>
                 </div>
               </td>
-              <td class="border px-4 py-2 truncate max-w-md hover:whitespace-normal hover:break-words">{{ entry.username
-              }}
+              <td class="border px-4 py-2 truncate max-w-md hover:whitespace-normal hover:break-words"
+                :class="{ 'border-you': entry.username === user?.username }">{{ entry.username
+                }}
               </td>
-              <td class="border px-4 py-2">{{ entry.points }}</td>
+              <td class="border px-4 py-2" :class="{ 'border-you': entry.username === user?.username }">{{
+                entry.points }}</td>
             </tr>
           </tbody>
         </table>
@@ -48,14 +52,18 @@
 
 <script lang="ts" setup>
 import { Leaderboard } from "@/types";
+import { storeToRefs } from "pinia";
+
+const store = useUserStore();
+const { user } = storeToRefs(store);
 
 useHead({
   title: "Leaderboards",
 });
 
-function navigateToUserProfile(username: string) {
-  return navigateTo(`/profile/${username}`);
-}
+// function navigateToUserProfile(username: string) {
+//   return navigateTo(`/profile/${username}`);
+// }
 
 const limit = 10; // Number of entries per page
 const page = ref(1);
@@ -120,3 +128,10 @@ const max_page = computed(() => {
   return max_page;
 });
 </script>
+
+<style scoped>
+.border-you {
+  border-color: #facf15;
+  border-width: 2px;
+}
+</style>
