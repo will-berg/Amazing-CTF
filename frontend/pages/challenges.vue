@@ -43,7 +43,10 @@ const store = useUserStore()
 const { user } = storeToRefs(store);
 
 const {data: hacks, pending: hackPending, error: hackError} = await useFetch<HackDetails[]>(
-    'http://localhost:5000/challenges'
+    'http://localhost:5000/challenges',{
+      method: "GET",
+      server: false 
+    }
 )
 
 const openModal = (hack: HackDetails): void => {

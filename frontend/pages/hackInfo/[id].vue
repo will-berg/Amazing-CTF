@@ -21,7 +21,10 @@
   
   // Show appropriate error message
   const {data: hack, pending: pendingHack, error: hackError } = await useFetch<HackDetails>(
-    `http://localhost:5000/challenges/${id}`
+    `http://localhost:5000/challenges/${id}`,{
+      method: "GET",
+      server: false 
+    }
   )
 
 const navTo = (name: string) => {
