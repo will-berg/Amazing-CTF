@@ -9,7 +9,9 @@
       />
     </div>
     <div class="px-6 py-4 text-center">
-      <div class="font-bold text-xl mb-2">{{ hack.title }}</div>
+      <div class="font-bold text-xl mb-2">{{ hack.title }}
+        <span v-if="isCompleted" class="text-green-500 ml-2">&#10003;</span>
+      </div>
     </div>
     <div class="text-center pb-4">
       <button class="btn btn-secondary rounded-full" @click="$emit('selectedHack', hack)">Read More</button>
@@ -20,9 +22,14 @@
 
 <script lang="ts" setup>
 import { HackDetails } from "@/types";
+import { storeToRefs } from "pinia";
 
-defineProps<{
+// const userStore = useUserStore();
+// const { user } = storeToRefs(userStore);
+
+const props = defineProps<{
   hack: HackDetails | null;
+  isCompleted: boolean
 }>();
 
 defineEmits<{

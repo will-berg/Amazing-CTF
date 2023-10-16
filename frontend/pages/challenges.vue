@@ -1,11 +1,12 @@
 <template>
   <div>
     <div class="container mx-auto p-4">
-      <div v-if="error"><AlertError :errorMessage="error.message"></AlertError></div>
-      <div v-else-if="pending"><AlertLoading></AlertLoading></div>
+      <div v-if="hackError"><AlertError :errorMessage="hackError.message"></AlertError></div>
+      <div v-else-if="hackPending"><AlertLoading></AlertLoading></div>
       <div v-else-if="hacks" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         <HackCard
           v-for="hack in hacks"
+          :isCompleted="checkCompleted(hack.title)"
           :key="hack.id"
           :hack="hack"
           class="relative group overflow-hidden hover:scale-105 transform transition-transform duration-300"
@@ -31,26 +32,14 @@
  const selectedHack = ref<HackDetails | null>(null);
  const open = ref<boolean>(false);
 
+ const user: User = ref<User>({
+  email: "example@example.com",
+  username: "Regularclip",
+  completedHacks: ['ReDos', 'Hidden'],
+  points: 175, 
+});
 
- // SHOULD CHALLENGES BE STORED IN A STORE?
-//  const hackStore = useHackStore();
-//  const  { hacks } = storeToRefs(hackStore);
-
-//  if(!hacks.value){
-//     console.log("Fetching")
-//     const {data: fetchedHacks, pending, error} = await useFetch(
-//       'http://localhost:5000/challenges'
-//     )
-
-//     if(fetchedHacks){
-//       console.log("Here are the fetched hacks: ", fetchedHacks)
-//       hackStore.setHacks(fetchedHacks)
-//       hacks.value = fetchedHacks // so that the hacks render on initial load
-//     }
-//   }
- 
-
-const {data: hacks, pending, error} = await useFetch<HackDetails[]>(
+const {data: hacks, pending: hackPending, error: hackError} = await useFetch<HackDetails[]>(
     'http://localhost:5000/challenges'
 )
 
@@ -64,6 +53,13 @@ const closeModal = (): void => {
   open.value = false;
 };
 
+
+const checkCompleted = (hackTitle: string): boolean => {
+  const val = user.value.completedHacks.includes(hackTitle);
+  console.log("hack: ", hackTitle)
+  console.log("is: ", val)
+  return user.value.completedHacks.includes(hackTitle);
+};
 
 </script>
  
