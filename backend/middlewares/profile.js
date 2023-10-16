@@ -1,10 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
+const profileImagesDirectory = path.join(__dirname, '../../data/profile/images');
 
 // Define the storage configuration for profile images
 const profileImageStorage = multer.diskStorage({
-  destination: 'files/', // Set your destination path
+  destination: profileImagesDirectory,
   filename: (req, file, cb) => {
     const username = req.body.username;
     const newFilename = `${username}_profile_image.png`;

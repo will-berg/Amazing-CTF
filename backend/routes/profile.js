@@ -4,7 +4,12 @@ const { profileImageUpload, replaceProfileImage } = require('../middlewares/prof
 const path = require('path');
 const fs = require('fs');
 
-const profileImagesDirectory = path.join(__dirname, './../data/profile/image');
+const profileImagesDirectory = path.join(__dirname, '../../data/profile/images');
+
+// Create the folder if it does not exist
+if (!fs.existsSync(profileImagesDirectory)) {
+  fs.mkdirSync(profileImagesDirectory, { recursive: true });
+}
 
 router.get('/', async (req, res) => {
   try {

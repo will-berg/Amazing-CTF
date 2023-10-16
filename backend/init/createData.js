@@ -103,6 +103,15 @@ async function createData() {
     const userModel = new User(user);
     await userModel.save();
   }
+
+  // Move all images of profile images to the data folder
+  const profiles = path.join(__dirname, "profiles");
+  const destinationImages = path.join(__dirname, "../../data/profile/images");
+  fs.readdirSync(profiles).forEach((file) => {
+    const src = path.join(profiles, file);
+    const dest = path.join(destinationImages, file);
+    fs.copyFileSync(src, dest);
+  });
 }
 
 module.exports = createData;

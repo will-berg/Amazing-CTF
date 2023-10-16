@@ -21,8 +21,6 @@
 
 <!--Maybe use something like this to display some cool stats: https://daisyui.com/components/stat/-->
 <script lang="ts" setup>
-
-
 import { storeToRefs } from "pinia";
 useHead({
   title: "Profile",
@@ -41,6 +39,15 @@ const pending = ref<boolean>(false);
 const { user } = storeToRefs(store);
 
 console.log("user ", user)
+
+onMounted(async () => {
+  if (!user.value) {
+    error.value = "No user found";
+    return;
+  }
+
+  imageUrl.value = generateProfileImageUrl(user.value.username);
+});
 
 const uploadProfileImage = async (image: File | null): Promise<void> => {
   if (!user.value) {

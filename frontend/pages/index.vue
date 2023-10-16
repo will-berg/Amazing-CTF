@@ -12,9 +12,7 @@
                 <dialog id="my_modal" class="modal">
                     <div class="modal-box">
                         <form method="dialog">
-                            <button
-                                class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-                            >
+                            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
                                 ✕
                             </button>
                         </form>
@@ -28,23 +26,17 @@
                         <ol>
                             <li>
                                 1.
-                                <NuxtLink to="register" class="text-primary hover:underline"
-                                    >Create</NuxtLink
-                                >
+                                <NuxtLink to="register" class="text-primary hover:underline">Create</NuxtLink>
                                 an account.
                             </li>
                             <li>
                                 2.
-                                <NuxtLink to="login" class="text-primary hover:underline"
-                                    >Login</NuxtLink
-                                >
+                                <NuxtLink to="login" class="text-primary hover:underline">Login</NuxtLink>
                                 to your account.
                             </li>
                             <li>
                                 3. Go to the
-                                <NuxtLink to="hacking" class="text-primary hover:underline"
-                                    >challenges page</NuxtLink
-                                >.
+                                <NuxtLink to="challenges" class="text-primary hover:underline">challenges page</NuxtLink>.
                             </li>
                             <li>
                                 4. Select a challenge that seems interesting by clicking
@@ -58,30 +50,20 @@
                     </div>
                 </dialog>
 
-                <NuxtLink to="/about" class="btn rounded-full btn-accent mx-2 font-bold"
-                    >About Us</NuxtLink
-                >
+                <NuxtLink to="/about" class="btn rounded-full btn-accent mx-2 font-bold">About Us</NuxtLink>
             </div>
-			<!-- Animated SVG -->
+            <!-- Animated SVG -->
             <AnimatedHacker />
         </div>
-		<!-- Cards -->
+        <!-- Cards -->
         <div class="grid lg:grid-cols-3 md:grid-rows-1 py-16 gap-4">
-            <FeatureCard
-                title="Challenges"
-                description="Engage in challenges of varying difficulties to hone your skills."
-				icon="game-icons:laptop"
-            />
-            <FeatureCard
-                title="Leaderboards"
+            <FeatureCard title="Challenges" description="Engage in challenges of varying difficulties to hone your skills."
+                icon="game-icons:laptop" />
+            <FeatureCard title="Leaderboards"
                 description="Ascend the ranks and see how your skills measure up against other hackers."
-				icon="ic:twotone-leaderboard"
-            />
-            <FeatureCard
-                title="Statistics"
-                description="Keep a close eye on your progress and track your growth."
-				icon="wpf:statistics"
-            />
+                icon="ic:twotone-leaderboard" />
+            <FeatureCard title="Statistics" description="Keep a close eye on your progress and track your growth."
+                icon="wpf:statistics" />
         </div>
     </div>
 </template>
@@ -94,5 +76,4 @@ useHead({
 
 </script>
 
-<style>
-</style>
+<style></style>
