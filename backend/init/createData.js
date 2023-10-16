@@ -7,15 +7,11 @@ const bcrypt = require("bcrypt");
 
 async function createData() {
   // Check if data exists and if not create it
-  // const userCount = await User.countDocuments();
-  // const challengeCount = await Challenge.countDocuments();
-  // if (userCount !== 0 || challengeCount !== 0) {
-  //   return;
-  // }
-
-  // Clear database
-  await User.deleteMany({});
-  await Challenge.deleteMany({});
+  const userCount = await User.countDocuments();
+  const challengeCount = await Challenge.countDocuments();
+  if (userCount !== 0 || challengeCount !== 0) {
+    return;
+  }
 
   // Create challenges
   const challenges = [
