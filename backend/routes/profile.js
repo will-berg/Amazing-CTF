@@ -4,7 +4,7 @@ const { profileImageUpload, replaceProfileImage } = require('../middlewares/prof
 const path = require('path');
 const fs = require('fs');
 
-const profileImagesDirectory = path.join(__dirname, '../files');
+const profileImagesDirectory = path.join(__dirname, './../data/profile/image');
 
 router.get('/', async (req, res) => {
   try {
