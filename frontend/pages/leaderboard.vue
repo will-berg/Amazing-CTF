@@ -11,7 +11,7 @@
     <div v-else class="w-full flex flex-col items-center justify-center">
       <h1 class="text-3xl font-bold mb-4">Leaderboard</h1>
       <div class="overflow-x-auto max-w-full">
-        <table class="table w-fit rounded-xl shadow-lg">
+        <table class="table w-fit rounded-xl shadow-lg border-separate border-spacing-y-0.5 ">
           <thead class="uppercase text-sm leading-normal text-white bg-gray-800">
             <tr>
               <th class="px-4 py-2">Rank</th>
@@ -21,7 +21,7 @@
           </thead>
           <tbody>
             <tr v-for="entry in leaderboard" :key="entry.username">
-              <td class="border border-l-2 px-4 py-2" :class="{ 'border-you': entry.username === user?.username }">
+              <td class="border border-l-2 px-4 py-2" :class="{ 'border-purple-600': entry.username === user?.username }">
                 <div class="flex items-center justify-center">
                   <span v-if="entry.position <= 3">
                     <NuxtImg class="inline-block" width="24" height="24"
@@ -31,10 +31,10 @@
                 </div>
               </td>
               <td class="border px-4 py-2 truncate max-w-md hover:whitespace-normal hover:break-words"
-                :class="{ 'border-you': entry.username === user?.username }">{{ entry.username
+                :class="{ 'border-purple-600': entry.username === user?.username }">{{ entry.username
                 }}
               </td>
-              <td class="border px-4 py-2" :class="{ 'border-you': entry.username === user?.username }">{{
+              <td class="border px-4 py-2" :class="{ 'border-purple-600': entry.username === user?.username }">{{
                 entry.points }}</td>
             </tr>
           </tbody>
@@ -122,10 +122,3 @@ const max_page = computed(() => {
   return max_page;
 });
 </script>
-
-<style scoped>
-.border-you {
-  border-color: #6419e6;
-  border-width: 2px;
-}
-</style>
