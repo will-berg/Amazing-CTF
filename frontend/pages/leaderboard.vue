@@ -9,7 +9,7 @@
     </div>
     <!-- Center everything in the middle of the page -->
     <div v-else class="w-full flex flex-col items-center justify-center">
-      <h1 class="text-3xl font-bold mb-4 text-yellow-400">Leaderboard</h1>
+      <h1 class="text-3xl font-bold mb-4 ">Leaderboard</h1>
       <div class="overflow-x-auto max-w-full">
         <table class="table w-fit rounded-xl shadow-lg">
           <thead class="uppercase text-sm leading-normal text-white bg-gray-800">
@@ -128,7 +128,7 @@ const max_page = computed(() => {
 
 <style scoped>
 .border-you {
-  border-color: #facf15;
+  border-color: #6419e6;
   border-width: 2px;
 }
 </style>
