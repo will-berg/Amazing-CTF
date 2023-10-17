@@ -32,6 +32,9 @@ const { user } = storeToRefs(store);
 const { data: hacks, pending: hackPending, error: hackError } = await useFetch<HackDetails[]>(
   'http://localhost:5000/challenges', {
   method: "GET",
+  headers: {
+    "Authorization": `Bearer ${user.value?.token}`
+  },
   server: false
 }
 )
