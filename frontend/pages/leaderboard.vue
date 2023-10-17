@@ -10,7 +10,7 @@
     <!-- Center everything in the middle of the page -->
     <div v-else class="w-full flex flex-col items-center justify-center">
       <h1 class="text-3xl font-bold mb-4">Leaderboard</h1>
-      <div class="max-w-full">
+      <div class="overflow-x-auto max-w-full">
         <table class="table w-fit rounded-xl shadow-lg">
           <thead class="uppercase text-sm leading-normal text-white bg-gray-800">
             <tr>

@@ -32,7 +32,6 @@ const repeatPassword = ref<string>("");
 
 const signUp = async () => {
     await register(username.value, email.value, password.value, repeatPassword.value);
-    console.log("in try: " + errorRegister.value)
     if (errorRegister.value === null) {
         navigateTo("/login?registered=true");
     }

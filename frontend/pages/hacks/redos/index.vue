@@ -67,9 +67,6 @@
 </template>
   
 <script lang="ts" setup>
-import { ref } from 'vue';
-import { RedosUserDetails } from '@/types';
-
 const { loading, error, newPoints } = useHacking();
 
 const completed = ref(false);
@@ -86,7 +83,7 @@ const closeModal = () => {
   showModal.value = false;
 }
 
-let timer;
+let timer: NodeJS.Timeout | undefined;
 
 function checkForRedos(): void {
   pending.value = true;
