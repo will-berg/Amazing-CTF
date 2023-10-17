@@ -3,12 +3,14 @@ import { storeToRefs } from "pinia";
 
 export function useHacking(){
     
-    const userStore = useUserStore();
-    const completedHackMsg = ref<String>("");
-    const { user } = storeToRefs(userStore);
+    
+    
     const loading = ref<boolean>(false);
     const error = ref<String | null>("");
     const newPoints = async (hackName: string): Promise<void> => {
+        const userStore = useUserStore();
+        const { user } = storeToRefs(userStore);
+        console.log("in composable: " + user.value?.token);
         loading.value = true;
         try {
             console.log(loading.value);
