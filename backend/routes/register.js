@@ -8,30 +8,26 @@ router.post("/", async (req, res) => {
   console.log(req.body);
 
   if (!email || !password || !username || !repeatPassword) {
-    console.log("All fields required")
-    return res
-      .status(400)
-      .send({ message: "All fields are required" });
+    console.log("All fields required");
+    return res.status(400).send({ message: "All fields are required" });
   }
 
   //check if email is correct format
   const emailRegex = /\S+@\S+\.\S+/;
-  if(!emailRegex.test(email)) {
-    console.log("email is not valid")
+  if (!emailRegex.test(email)) {
+    console.log("email is not valid");
     return res
       .status(400)
       .send({ message: "Please enter email in a valid format" });
   }
 
-  if(password !== repeatPassword) {
-    console.log("passwords do not match")
-    return res
-      .status(400)
-      .send({ message: "Passwords do not match" });
+  if (password !== repeatPassword) {
+    console.log("passwords do not match");
+    return res.status(400).send({ message: "Passwords do not match" });
   }
 
-  if(password.length < 6) {
-    console.log("password must be at least 6 characters")
+  if (password.length < 6) {
+    console.log("password must be at least 6 characters");
     return res
       .status(400)
       .send({ message: "Password must be at least 6 characters" });
@@ -40,9 +36,8 @@ router.post("/", async (req, res) => {
   try {
     const accountEmailExists = await User.findOne({ email: email });
     const accountNameExists = await User.findOne({ username: username });
-    console.log("email and name exists value: " + accountEmailExists, accountNameExists)
     if (accountEmailExists || accountNameExists) {
-        console.log("account already exists")
+      console.log("account already exists");
       return res.status(400).send({ message: "Account already exists" });
     }
 
@@ -58,20 +53,9 @@ router.post("/", async (req, res) => {
     const user = await newUser.save();
     res.status(200).send(user);
   } catch (err) {
-    console.log("error in catch")
     res.status(500).send({ message: "Server error", details: err.message });
-    console.log(err);
+    console.error(err);
   }
 });
-
-/* router.get("/", async (req, res) => {
-  try {
-    const users = await User.find();
-    if (!users) throw Error("No users exist");
-    res.json(users);
-  } catch (err) {
-    console.log(err);
-  }
-}); */
 
 module.exports = router;

@@ -11,17 +11,19 @@
     </NuxtLink>
     <div v-else class="card bg-gray-800 shadow-xl image-full">
         <div class="card-body">
-            <h2 class="card-title"><Icon :name="icon" />{{ title }}</h2>
+            <h2 class="card-title">
+                <Icon :name="icon" />{{ title }}
+            </h2>
             <p>{{ description }}</p>
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-defineProps({
-    title: String,
-    description: String,
-    icon: String,
-    link: String,
-});
+defineProps<{
+    title: string,
+    description: string,
+    icon: string,
+    link: string,
+}>();
 </script>

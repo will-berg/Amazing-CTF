@@ -72,7 +72,7 @@ const newPost = async (): Promise<void> => {
         alert("You have been hacked!");
         postData.value = "";
         //call success function here to get flag
-        await newPoints("xss-medium");
+        await newPoints("XSS-Medium");
         completed.value = true;
     }
     posts.value.push(postData.value);

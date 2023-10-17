@@ -35,7 +35,9 @@ defineProps({
 })
 
 onMounted(() => {
-  party.confetti(document.querySelector(".h-screen"), {
+  const element = document.querySelector(".h-screen") as HTMLElement | null
+  if (!element) return
+  party.confetti(element, {
     count: party.variation.range(50, 200),
   })
 })

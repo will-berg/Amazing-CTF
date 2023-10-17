@@ -25,7 +25,8 @@
             <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
             <BaseInput v-model:text="password" type="text" placeholder="Password" />
           </div>
-          <button @click="checkForRedos" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+          <button @click="checkForRedos"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
             Sign up!
           </button>
         </div>
@@ -129,7 +130,7 @@ function checkForRedos(): void {
     pending.value = false;
     console.log('Worker terminated due to timeout');
     // Hack Completed! 
-    await newPoints("redos")
+    await newPoints("ReDos")
     completed.value = true;
   }, 5000); // 5 seconds
 

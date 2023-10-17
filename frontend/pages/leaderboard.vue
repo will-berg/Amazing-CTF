@@ -105,9 +105,6 @@ const { data, pending, error } = await useFetch<Leaderboard>(
   { query: { page, limit }, method: "GET", lazy: true, server: false }
 );
 
-if (error.value) {
-  console.error(error.value);
-}
 // map the position of the user in the leaderboard
 const leaderboard = computed(() => {
   if (!data.value?.leaderboard) return [];

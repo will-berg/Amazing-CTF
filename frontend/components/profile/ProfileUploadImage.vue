@@ -13,8 +13,6 @@
 </template>
   
 <script lang="ts" setup>
-import { ref } from 'vue';
-
 const selectedFile = ref<File | null>(null);
 const isOpen = ref<boolean>(false);
 

@@ -32,6 +32,7 @@ export const useUserStore = defineStore({
             localStorage.removeItem("user");
         },
         addPoints(points: number, newHack: string): void {
+            if (!this.user) return;
             this.user = {
                 ...this.user,
                 points: this.user.points + points,

@@ -14,25 +14,28 @@
                     <label class="label">
                         <span class="label-text font-bold">Diary entry #{{ posts.length + 1 }}</span>
                     </label>
-                    <textarea placeholder="Make an entry.." class="textarea textarea-bordered textarea-lg w-80" v-model="postData"></textarea>
+                    <textarea placeholder="Make an entry.." class="textarea textarea-bordered textarea-lg w-80"
+                        v-model="postData"></textarea>
                 </div>
                 <button class="btn btn-outline w-40" @click="newPost()">Post</button>
                 <div class="chat chat-start" v-for="(entry, index) in posts" :key="index">
-                    <div class="chat-bubble font-bold">Diary entry #{{index + 1}}: {{ entry }}</div>
+                    <div class="chat-bubble font-bold">Diary entry #{{ index + 1 }}: {{ entry }}</div>
                 </div>
 
             </div>
 
-            <dialog id="my_modal_3" :class="{'modal' : true, 'modal-open': showModal}">
+            <dialog id="my_modal_3" :class="{ 'modal': true, 'modal-open': showModal }">
                 <div class="modal-box">
                     <form method="dialog">
-                        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" @click="closeModal">✕</button>
+                        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+                            @click="closeModal">✕</button>
                     </form>
                     <h3 class="font-bold text-lg">Cross Site Scripting - XSS</h3>
                     <p class="text-sm">Easy Difficulty</p>
                     <p class="py-4">You have discovered a vulnerable web page which allows you to upload diary entries which
                         are rendered.</p>
-                    <p class="py-4">The goal of the hack is to inject the following script onto the webpage and execute it using script tags:
+                    <p class="py-4">The goal of the hack is to inject the following script onto the webpage and execute it
+                        using script tags:
                     </p>
                     <p class="py-4 font-bold">alert("You have been hacked!");</p>
                 </div>
@@ -62,14 +65,14 @@ const closeModal = (): void => {
 }
 const { error, newPoints, loading } = useHacking();
 
-const newPost = async (): Promise<void> => {   
+const newPost = async (): Promise<void> => {
     console.log("postdata: " + postData.value)
     console.log("<script>alert(\"You have been hacked!\");" + scriptEndTag)
     if (xsspattern.test(postData.value)) {
         alert("You have been hacked!");
         postData.value = "";
         //call success function here to get flag
-        await newPoints("xss-easy");
+        await newPoints("XSS-Easy");
         completed.value = true;
     }
     posts.value.push(postData.value);
