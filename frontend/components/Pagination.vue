@@ -1,18 +1,14 @@
 <template>
-  <div class="grid grid-cols-3 gap-4 bg-base-200">
-    <button class="btn btn-outline" :disabled="page === 1" @click="$emit('update:page', page - 1)">
-      Previous
-    </button>
-    <div class="flex justify-center items-center">
-      <input class="input bg-base-200 w-20 text-center hover:border-red-500 hover:border-spacing-1" type="number" min="1"
+  <div class="join grid grid-flow-col gap-0.5">
+    <button class="join-item btn btn-outline" :disabled="page === 1" @click="$emit('update:page', page - 1)">«</button>
+    <div class="join-item flex justify-center items-center">
+      <input class="input bg-base-200 w-16 text-center hover:border-red-500 hover:border-spacing-1" type="number" min="1"
         :max="max_page" :value="page" @input="$emit('update:page', limit(($event.target as HTMLInputElement).value))">
-      <!-- Horizontal line -->
-      <div class="border-l-2 border-gray-500 h-full px-6"></div>
-      <div class="text-center pr-6">{{ max_page }}</div>
+      <div class="border-l-2 border-gray-500 h-full mx-0.5"></div>
+      <div class="text-center w-16">{{ max_page }}</div>
     </div>
-    <button class="btn btn-outline" :disabled="page === max_page" @click="$emit('update:page', page + 1)">
-      Next
-    </button>
+    <button class="join-item btn btn-outline" :disabled="page === max_page"
+      @click="$emit('update:page', page + 1)">»</button>
   </div>
 </template>
 
