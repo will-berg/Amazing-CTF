@@ -19,6 +19,11 @@
 <script lang="ts" setup>
 import { useRoute } from "vue-router";
 import { HackDetails } from "~/types";
+import { storeToRefs } from "pinia";
+
+const store = useUserStore();
+const { user } = storeToRefs(store);
+
 
 const { id } = useRoute().params;
 
@@ -26,6 +31,9 @@ const { id } = useRoute().params;
 const { data: hack, pending: pendingHack, error: hackError } = await useFetch<HackDetails>(
   `http://localhost:5000/challenges/${id}`, {
   method: "GET",
+  headers: {
+    "Authorization": `Bearer ${user.value?.token}`
+  },
   server: false
 }
 )

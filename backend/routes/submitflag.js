@@ -48,16 +48,13 @@ router.post("/", validateUser, async (req, res) => {
 
     if (user.completedHacks.includes(pointsEarned.hackName)) {
       console.log("already solved");
-      return res.json({ message: "You have already solved this hack, so no points for you!" });
+      return res.status(400).json({ message: "You have already solved this hack, so no points for you!" });
     }
     
     user.points += pointsEarned.points;
     user.completedHacks.push(pointsEarned.hackName);
     const updated = await userModel.updateOne({email: req.user.email}, {$set:{points: user.points, completedHacks: user.completedHacks}})
     console.log(updated);
-    //await user.save();
-    //const updatedUser = await userModel.findOne({ email: req.user.email });
-    //console.log(updatedUser);
     res
       .status(200)
       .json({ message: `Good job! You have completed the ${pointsEarned.hackName} and earned ${pointsEarned.points} points!`, newPoints: pointsEarned.points });
