@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col gap-3 items-center">
+    <form class="flex flex-col gap-3 items-center">
         <h3>Create Account</h3>
         <Icon name="simple-icons:cyberdefenders" size="32" />
         <BaseInput placeholder="Username" v-model:text="username" class="input input-bordered w-full max-w-xs"
@@ -19,7 +19,7 @@
             Already have an account?
             <NuxtLink to="/login" class="text-primary font-bold">Login</NuxtLink>
         </p>
-    </div>
+    </form>
 </template>
 
 <script lang="ts" setup>
