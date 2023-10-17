@@ -2,9 +2,6 @@ import { useUserStore } from "../stores/user";
 import { storeToRefs } from "pinia";
 
 export function useHacking(){
-    
-    
-    
     const loading = ref<boolean>(false);
     const error = ref<String | null>("");
     const newPoints = async (hackName: string): Promise<void> => {

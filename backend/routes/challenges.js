@@ -3,6 +3,7 @@ const path = require("path");
 const fs = require("fs");
 const multer = require("multer");
 const Challenge = require("../models/challengeModel");
+const validateUser = require("../middlewares/validateUser");
 
 const router = express.Router();
 const filePathImages = path.join(__dirname, "../../data/challenges/images");
@@ -71,7 +72,7 @@ async function get_challenge(req, res, searchFunc = _get_challenge) {
 }
 
 // GET all challenges
-router.get("/", async (_req, res) => {
+router.get("/", validateUser, async (_req, res) => {
   const challenges = await Challenge.find({}).exec();
   res.send(challenges);
 });
