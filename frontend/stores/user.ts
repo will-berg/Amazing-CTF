@@ -19,24 +19,24 @@ export const useUserStore = defineStore({
         },
         getUser(): User | null {
             return this.user;
-        }
+        },
     },
     // Perform operations on the state
     actions: {
         login(user: User): void {
             this.user = user;
-            console.log("Logged in as", this.user)
+            console.log("Logged in as", this.user);
         },
         logout(): void {
             this.user = null;
             localStorage.removeItem("user");
         },
         addPoints(points: number, newHack: string): void {
-            console.log("adding points in pinia")
-            console.log("newpopints: ", points)
-            console.log("newhack: ", newHack)
-            this.user!.points += points;
-            this.user!.completedHacks.push(newHack);
+            this.user = {
+                ...this.user,
+                points: this.user.points + points,
+                completedHacks: [...this.user.completedHacks, newHack],
+            };
         },
     },
 });
