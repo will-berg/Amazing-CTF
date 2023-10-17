@@ -7,6 +7,7 @@
             <div v-if="pending">
                 <AlertLoading></AlertLoading>
             </div>
+            <!-- User Profile Image -->
             <ProfileImg
                 v-else
                 :image="generateProfileImageUrl(user.username)"
@@ -14,9 +15,24 @@
             />
             <hr class="w-80 h-1 my-6 bg-green-100 border-0 rounded">
             <h2>{{ user.username }}</h2>
-            <h4>Total Score: {{ user.points }}</h4>
             <hr class="w-80 h-1 my-6 bg-green-100 border-0 rounded">
+
+             <!-- Stat component -->
+             <div class="stats shadow">
+                <div class="stat">
+                    <div class="stat-title">Total Score</div>
+                    <div class="stat-value text-secondary">{{ user.points }}</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-title">Hacks done</div>
+                    <div class="stat-value text-primary">{{ completedHacksRatio(user.completedHacks) }}%</div>
+                </div>
+            </div>
+            
+            <!-- User Profile List of Completed Hacks -->
             <ProfileCompletedHacks :hacks="user.completedHacks" />
+
+            <!-- Modal for uploading new Profile Image -->
             <ProfileUploadImage
                 :openModal="open"
                 @closeModal="closeUploadProfileImage"
@@ -35,12 +51,13 @@ useHead({
 
 
 const store = useUserStore();
+const { user } = storeToRefs(store);
+
 const imageUrl = ref<string>("");
 const open = ref<boolean>(false);
-
-const error: Ref<null | string> = ref(null);
 const pending = ref<boolean>(false);
-const { user } = storeToRefs(store);
+const error: Ref<null | string> = ref(null);
+
 
 const uploadProfileImage = async (image: File | null): Promise<void> => {
     if (!user.value) {
@@ -49,7 +66,6 @@ const uploadProfileImage = async (image: File | null): Promise<void> => {
     }
 
     open.value = false;
-    console.log("Image", image);
 
     if (!image) {
         error.value = "No image selected";
@@ -86,6 +102,10 @@ function generateProfileImageUrl(username: string): string {
     queryParams.append("username", username);
     queryParams.append("date", Date.now().toString());
     return `http://localhost:5000/profile?${queryParams.toString()}`;
+}
+
+function completedHacksRatio(completedHacks: string[]): number {
+    return Math.round((completedHacks.length / 5)*100);
 }
 
 const openUploadProfileImage = (): void => {
