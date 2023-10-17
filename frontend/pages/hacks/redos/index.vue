@@ -16,7 +16,6 @@
       <span v-if="pending" class="loading loading-spinner loading-lg"></span>
       <div v-if="!pending" class="flex items-center justify-center min-h-screen">
         <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg">
-          <!-- Your form content -->
           <div class="mb-6">
             <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
             <BaseInput v-model:text="username" type="text" placeholder="Username" />
@@ -87,7 +86,7 @@ let timer: NodeJS.Timeout | undefined;
 
 function checkForRedos(): void {
   pending.value = true;
-  // Create a blob from the function and create a URL for the blob
+
   const blob = new Blob([`self.onmessage = function(e) {
       const workerData = e.data;
       const startTime = Date.now(); // Record the start time
@@ -120,7 +119,7 @@ function checkForRedos(): void {
 
   worker.addEventListener('message', handleWorkerMessage);
 
-  // Start the timer
+  // Start the timer 5 seconds
   timer = setTimeout(async () => {
     // Timeout reached, terminate the worker
     worker.terminate();
@@ -129,7 +128,7 @@ function checkForRedos(): void {
     // Hack Completed! 
     await newPoints("ReDos")
     completed.value = true;
-  }, 5000); // 5 seconds
+  }, 5000); 
 
   // properties needed by the worker function
   const workerData = {
@@ -142,13 +141,13 @@ function checkForRedos(): void {
 
 function handleWorkerMessage(event: MessageEvent) {
   pending.value = false;
-  clearTimeout(timer); // Clear the timer
+  clearTimeout(timer); 
   const result = event.data;
   if (result === 'Worker execution exceeded 5 seconds') {
     console.log('Worker execution exceeded 5 seconds');
-    // Handle the case when the worker takes too long
   } else {
-    console.log(result); // Result from the worker
+    // Result from the worker
+    console.log(result); 
   }
 }
 

@@ -17,9 +17,9 @@ if (!fs.existsSync(profileImagesDirectory)) {
   fs.mkdirSync(profileImagesDirectory, { recursive: true });
 }
 
+// route for getting profile image
 router.get("/", async (req, res) => {
   try {
-    // Extract the username from the query parameters
     const username = req.query.username;
 
     const imagePath = path.join(
@@ -27,12 +27,11 @@ router.get("/", async (req, res) => {
       `${username}_profile_image.png`
     );
 
-    // Check if the image file exists
     if (fs.existsSync(imagePath)) {
       res.setHeader("Content-Type", "image/png");
       res.sendFile(imagePath);
     } else {
-      // send the default profile image
+      // no profile image, send the default profile image
       const defaultImagePath = path.join(
         profileImagesDirectory,
         "default_profile_image.png"
@@ -50,6 +49,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+// route for posting a new profile image
 router.post(
   "/image",
   replaceProfileImage,
@@ -60,7 +60,6 @@ router.post(
       return res.status(400).json({ error: "No image selected" });
     }
 
-    // Return a success message
     return res.status(200).json({ message: "Profile image was updated" });
   }
 );

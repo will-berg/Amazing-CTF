@@ -7,7 +7,7 @@
             <div v-if="pending">
                 <AlertLoading></AlertLoading>
             </div>
-            <!-- User Profile Image -->
+
             <ProfileImg
                 v-else
                 :image="generateProfileImageUrl(user.username)"
@@ -17,7 +17,6 @@
             <h2>{{ user.username }}</h2>
             <hr class="w-80 h-1 my-6 bg-green-100 border-0 rounded">
 
-             <!-- Stat component -->
              <div class="stats shadow">
                 <div class="stat">
                     <div class="stat-title">Total Score</div>
@@ -29,10 +28,8 @@
                 </div>
             </div>
 
-            <!-- User Profile List of Completed Hacks -->
             <ProfileCompletedHacks :hacks="user.completedHacks" />
 
-            <!-- Modal for uploading new Profile Image -->
             <ProfileUploadImage
                 :openModal="open"
                 @closeModal="closeUploadProfileImage"
@@ -42,7 +39,6 @@
     </div>
 </template>
 
-<!--Maybe use something like this to display some cool stats: https://daisyui.com/components/stat/-->
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 useHead({
@@ -72,7 +68,6 @@ const uploadProfileImage = async (image: File | null): Promise<void> => {
         return;
     }
 
-    // Perhaps manually show spinner as we start to upload?
     pending.value = true;
 
     const formData = new FormData();
