@@ -5,9 +5,11 @@ const MAX_RETRIES = 5;
 const db = async () => {
   // First time could fail as MongoDB could be initializing
   let retries = 0;
+  let error = null;
   while (mongoose.connection.readyState !== 1) {
     if (retries++ >= MAX_RETRIES) {
-      console.log("Could not connect to MongoDB");
+      console.error(error);
+      console.error(`Couldn't connect to MongoDB after ${MAX_RETRIES} retries`);
       process.exit(1);
     }
 
@@ -19,7 +21,7 @@ const db = async () => {
       );
       console.log("Connected to MongoDB!!!");
     } catch (err) {
-      console.log(err);
+      error = err;
     }
   }
 };

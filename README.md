@@ -7,13 +7,13 @@ In order to run the application, you need to have Git, Docker, and Docker Compos
 
 1. Clone the repository to your local computer: `git clone https://github.com/MehirWolde/Amazing-CTF.git`
 2. Navigate to the root of the cloned repository
-3. Run `docker-compose up`
+3. Run `docker-compose up --build` to build the application and run it in a container
 4. The application is now accessible locally at port 3000. To use it, go to the url: [http://localhost:3000](http://localhost:3000)
 
 or run the following commands in your terminal:
 ```bash
 git clone https://github.com/MehirWolde/Amazing-CTF.git
 cd Amazing-CTF
-docker-compose up
+docker-compose up --build
 ```
 and then open browser to [http://localhost:3000](http://localhost:3000)
