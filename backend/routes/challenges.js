@@ -72,7 +72,7 @@ async function get_challenge(req, res, searchFunc = _get_challenge) {
 }
 
 // GET all challenges
-router.get("/", validateUser, async (_req, res) => {
+router.get("/", async (_req, res) => {
   const challenges = await Challenge.find({}).exec();
   res.send(challenges);
 });
