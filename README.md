@@ -17,3 +17,24 @@ cd Amazing-CTF
 docker-compose up --build
 ```
 and then open browser to [http://localhost:3000](http://localhost:3000)
+
+## Doing the hacks
+Short description on how to perform each hack.
+### ReDos
+The following input will take the server more than 5 seconds to process which will count as successfully completing this hack.
+```
+username: ACCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCX
+password: A(B|C+)+D
+```
+### Hidden
+When inspecting the page source you'll find a comment stating that we should remove aboutOld.
+Navigate to this page and you will have competed this hack.
+
+### XSS Easy
+Input:
+```
+<script>alert("You have been hacked!")</script>
+```
+and this hack will be completed
+
+### XSS Medium
