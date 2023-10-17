@@ -14,6 +14,12 @@ export const useUserStore = defineStore({
         userEmail(): string {
             return this.user?.email ?? "Anonymous";
         },
+        userToken(): string {
+            return this.user?.token ?? "";
+        },
+        getUser(): User | null {
+            return this.user;
+        }
     },
     // Perform operations on the state
     actions: {
@@ -23,9 +29,14 @@ export const useUserStore = defineStore({
         },
         logout(): void {
             this.user = null;
+            localStorage.removeItem("user");
         },
-        testing(): void {
-            console.log("testing");
+        addPoints(points: number, newHack: string): void {
+            console.log("adding points in pinia")
+            console.log("newpopints: ", points)
+            console.log("newhack: ", newHack)
+            this.user!.points += points;
+            this.user!.completedHacks.push(newHack);
         },
     },
 });

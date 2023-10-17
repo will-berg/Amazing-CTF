@@ -29,10 +29,6 @@ const open = ref<boolean>(false);
 const store = useUserStore()
 const { user } = storeToRefs(store);
 
-definePageMeta({
-  middleware: ["authenticate"]
-})
-
 const { data: hacks, pending: hackPending, error: hackError } = await useFetch<HackDetails[]>(
   'http://localhost:5000/challenges', {
   method: "GET",

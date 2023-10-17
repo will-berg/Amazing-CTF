@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="user" class="flex flex-col items-center text-center">
+        <div v-if="user" class="flex flex-col items-center text-center gap-4">
             <div v-if="error">
                 <AlertError :errorMessage="error"></AlertError>
             </div>
@@ -12,14 +12,10 @@
                 :image="generateProfileImageUrl(user.username)"
                 @openUploadProfileImage="openUploadProfileImage"
             />
-            <hr
-                class="w-96 h-1 mx-auto my-4 bg-green-100 border-0 rounded md:my-10 dark:bg-gray-700"
-            />
+            <hr class="w-80 h-1 my-6 bg-green-100 border-0 rounded">
             <h2>{{ user.username }}</h2>
             <h4>Total Score: {{ user.points }}</h4>
-            <hr
-                class="w-96 h-1 mx-auto my-4 bg-green-100 border-0 rounded md:my-10 dark:bg-gray-700"
-            />
+            <hr class="w-80 h-1 my-6 bg-green-100 border-0 rounded">
             <ProfileCompletedHacks :hacks="user.completedHacks" />
             <ProfileUploadImage
                 :openModal="open"
@@ -37,9 +33,6 @@ useHead({
     title: "Profile",
 });
 
-definePageMeta({
-    middleware: ["authenticate"],
-});
 
 const store = useUserStore();
 const imageUrl = ref<string>("");

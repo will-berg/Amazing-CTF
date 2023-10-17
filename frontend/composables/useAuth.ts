@@ -50,7 +50,6 @@ export function useAuth() {
 
   //fix the return type from any to something more specific
   const login = async (email: string, password: string): Promise<any> => {
-    userStore.testing();
     console.log("in composable: " + email, password);
     loading.value = true;
     try {

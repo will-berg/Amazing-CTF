@@ -14,7 +14,7 @@ export interface User {
 	username: string;
     points: number;
     completedHacks: string[];
-    token?: string;
+    token: string;
 }
 
 export interface UserLeaderboard {
