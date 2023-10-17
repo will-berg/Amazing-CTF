@@ -7,6 +7,9 @@ export function useHacking(){
     const newPoints = async (hackName: string): Promise<void> => {
         const userStore = useUserStore();
         const { user } = storeToRefs(userStore);
+        if(!user.value){
+            return;
+        }
         console.log("in composable: " + user.value?.token);
         loading.value = true;
         try {

@@ -39,7 +39,7 @@ const { data: hack, pending: pendingHack, error: hackError } = await useFetch<Ha
 )
 
 const navTo = (url: string) => {
-  return navigateTo(url, { external: true })
+  return navigateTo(url)
 }
 
 </script>
