@@ -14,7 +14,7 @@ const db = async () => {
     console.log(`Connecting to MongoDB (try ${retries}/${MAX_RETRIES})`);
     try {
       await mongoose.connect(
-        "mongodb://127.0.0.1:27017/amazing-ctf?authSource=admin",
+        "mongodb://root:test@database:27017/amazing-ctf?authSource=admin",
         { useNewUrlParser: true, useUnifiedTopology: true }
       );
       console.log("Connected to MongoDB!!!");
