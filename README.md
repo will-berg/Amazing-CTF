@@ -38,3 +38,17 @@ Input:
 and this hack will be completed
 
 ### XSS Medium
+Sometimes, there is filtering preventing you from inserting <script> tags.
+To complete this hack you must circumvent this filtering.
+Input:
+```
+<img onerror=alert("You have been hacked!")/>
+```
+And you will have completed this hack.
+
+### Password
+You need to decipher the correct password and use the correct username to complete this hack.
+```
+username: InternAccount
+password: GoodJob
+```
