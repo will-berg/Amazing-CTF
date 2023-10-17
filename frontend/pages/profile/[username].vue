@@ -21,14 +21,14 @@
              <div class="stats shadow">
                 <div class="stat">
                     <div class="stat-title">Total Score</div>
-                    <div class="stat-value text-secondary">{{ user.points }}</div>
+                    <div class="stat-value text-accent">{{ user.points }}</div>
                 </div>
                 <div class="stat">
                     <div class="stat-title">Hacks done</div>
                     <div class="stat-value text-primary">{{ completedHacksRatio(user.completedHacks) }}%</div>
                 </div>
             </div>
-            
+
             <!-- User Profile List of Completed Hacks -->
             <ProfileCompletedHacks :hacks="user.completedHacks" />
 
