@@ -62,7 +62,7 @@ const closeModal = (): void => {
 }
 const { error, newPoints, loading } = useHacking();
 
-const newPost = async () => {   
+const newPost = async (): Promise<void> => {   
     console.log("postdata: " + postData.value)
     console.log("<script>alert(\"You have been hacked!\");" + scriptEndTag)
     if (xsspattern.test(postData.value)) {

@@ -1,17 +1,17 @@
 <template>
   <div>
-    <div v-if="user" class="flex flex-col items-center text-center">
+    <div v-if="user" class="flex flex-col items-center text-center gap-4">
       <div v-if="error">
         <AlertError :errorMessage="error"></AlertError>
       </div>
-      <div v-if="pending">
+      <div v-else-if="pending">
         <AlertLoading></AlertLoading>
       </div>
       <ProfileImg v-else :image="imageUrl" @openUploadProfileImage="openUploadProfileImage" />
-      <hr class="w-96 h-1 mx-auto my-4 bg-green-100 border-0 rounded md:my-10 dark:bg-gray-700">
+      <hr class="w-80 h-1 my-6 bg-green-100 border-0 rounded">
       <h2>{{ user.username }}</h2>
       <h4>Total Score: {{ user.points }}</h4>
-      <hr class="w-96 h-1 mx-auto my-4 bg-green-100 border-0 rounded md:my-10 dark:bg-gray-700">
+      <hr class="w-80 h-1 my-6 bg-green-100 border-0 rounded">
       <ProfileCompletedHacks :hacks="user.completedHacks" />
       <ProfileUploadImage :openModal="open" @closeModal="closeUploadProfileImage" @uploadImage="uploadProfileImage" />
     </div>
@@ -26,9 +26,6 @@ useHead({
   title: "Profile",
 });
 
-definePageMeta({
-  middleware: ["authenticate"]
-})
 
 const store = useUserStore()
 const imageUrl = ref<string>("");
@@ -40,14 +37,8 @@ const { user } = storeToRefs(store);
 
 console.log("user ", user)
 
-onMounted(async () => {
-  if (!user.value) {
-    error.value = "No user found";
-    return;
-  }
 
-  imageUrl.value = generateProfileImageUrl(user.value.username);
-});
+
 
 const uploadProfileImage = async (image: File | null): Promise<void> => {
   if (!user.value) {
@@ -89,6 +80,7 @@ const uploadProfileImage = async (image: File | null): Promise<void> => {
 
 
 function generateProfileImageUrl(username: string): string {
+  console.log("username", username)
   const queryParams = new URLSearchParams();
   queryParams.append('username', username);
   queryParams.append('date', Date.now().toString());

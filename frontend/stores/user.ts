@@ -17,6 +17,9 @@ export const useUserStore = defineStore({
         userToken(): string {
             return this.user?.token ?? "";
         },
+        getUser(): User | null {
+            return this.user;
+        }
     },
     // Perform operations on the state
     actions: {
@@ -29,6 +32,9 @@ export const useUserStore = defineStore({
             localStorage.removeItem("user");
         },
         addPoints(points: number, newHack: string): void {
+            console.log("adding points in pinia")
+            console.log("newpopints: ", points)
+            console.log("newhack: ", newHack)
             this.user!.points += points;
             this.user!.completedHacks.push(newHack);
         },

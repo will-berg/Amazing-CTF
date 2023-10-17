@@ -42,6 +42,7 @@ watch(theme, (themeVal) => {
 });
 
 watch(user, (userVal) => {
+    console.log("userval in layout", userVal)
     localStorage.setItem("user", JSON.stringify(userVal));
 });
 

@@ -57,22 +57,27 @@
         </div>
         <!-- Cards -->
         <div class="grid lg:grid-cols-3 md:grid-rows-1 py-16 gap-4">
-            <FeatureCard title="Challenges" description="Engage in challenges of varying difficulties to hone your skills."
-                icon="game-icons:laptop" />
+            <FeatureCard v-if="user" title="Challenges" description="Engage in challenges of varying difficulties to hone your skills."
+                icon="game-icons:laptop" link="/challenges" />
             <FeatureCard title="Leaderboards"
                 description="Ascend the ranks and see how your skills measure up against other hackers."
-                icon="ic:twotone-leaderboard" />
-            <FeatureCard title="Statistics" description="Keep a close eye on your progress and track your growth."
-                icon="wpf:statistics" />
+                icon="ic:twotone-leaderboard" link="/leaderboard" />
+            <FeatureCard v-if="user" title="Statistics" description="Keep a close eye on your progress and track your growth."
+                icon="wpf:statistics" :link="'/profile/' + user.username" />
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia';
 
+const userStore = useUserStore();
+const { user } = storeToRefs(userStore)
 useHead({
     title: "Home",
 });
+
+
 
 </script>
 

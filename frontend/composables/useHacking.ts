@@ -4,21 +4,19 @@ import { storeToRefs } from "pinia";
 export function useHacking(){
     
     const userStore = useUserStore();
+    const completedHackMsg = ref<String>("");
     const { user } = storeToRefs(userStore);
     const loading = ref<boolean>(false);
     const error = ref<String | null>("");
-    console.log("localstorage user: ", user.value?.token);
     const newPoints = async (hackName: string): Promise<void> => {
-        console.log("in hacking composable: " + hackName);
         loading.value = true;
-        //console.log("token in composable: ", userStore.userToken)
         try {
             console.log(loading.value);
             const res = await fetch("http://localhost:5000/submitflag", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": "Bearer " ,
+                    "Authorization": "Bearer " + user.value?.token 
                 },
                 body: JSON.stringify({
                     hackName: hackName,
@@ -28,12 +26,13 @@ export function useHacking(){
             const data = await res.json();
             console.log("res json composable:", data);
             if (res.ok) {
-                console.log("in else of composable");
-                console.log(data);
                 loading.value = false;
                 error.value = null;
-                userStore.addPoints(data.newPoints, hackName);
-                console.log("store new data: ", userStore.user)
+                console.log(data);
+                if(data.newPoints){
+                    userStore.addPoints(data.newPoints, hackName);
+                    console.log("store new data: ", userStore.user)
+                }
             } else {
                 console.log(data);
                 error.value = data.message;

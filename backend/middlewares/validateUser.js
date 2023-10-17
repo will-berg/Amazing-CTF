@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 
 const validateUser = (req, res, next) => {
   //maybe check this better
-  const tokenHeader = req.headers["Authorization"];
+  const tokenHeader = req.header("Authorization");
   console.log(tokenHeader)
   if (!tokenHeader) {
     console.log("no token")

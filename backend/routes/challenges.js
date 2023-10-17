@@ -228,23 +228,23 @@ router.put("/:id", async (req, res) => {
 });
 
 // DELETE a challenge
-router.delete("/:id", async (req, res) => {
-  let challenge = await get_challenge(req, res, _delete_challenge);
-  if (!challenge) return;
+// router.delete("/:id", async (req, res) => {
+//   let challenge = await get_challenge(req, res, _delete_challenge);
+//   if (!challenge) return;
 
-  // Delete the image
-  filePath = path.join(filePathImages, challenge.image);
-  if (fs.existsSync(filePath)) {
-    fs.unlink(filePath, (err) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).send("Failed to delete the image");
-      }
-    });
-  }
+//   // Delete the image
+//   filePath = path.join(filePathImages, challenge.image);
+//   if (fs.existsSync(filePath)) {
+//     fs.unlink(filePath, (err) => {
+//       if (err) {
+//         console.error(err);
+//         return res.status(500).send("Failed to delete the image");
+//       }
+//     });
+//   }
 
-  res.send(challenge);
-});
+//   res.send(challenge);
+// });
 
 // GET the image of a challenge with the given ID
 router.get("/:id/image", async (req, res) => {

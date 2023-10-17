@@ -6,18 +6,23 @@ const validateUser = require("../middlewares/validateUser");
 const points = [
   {
     hackName: "xss-easy",
-    points: 5,
-    flag: "4a!7Yz",
+    points: 3,
   },
   {
     hackName: "xss-medium",
     points: 10,
-    flag: "R@3t^p",
   },
   {
-    hackName: "xss-hard",
+    hackName: "password",
+    points: 8,
+  },
+  {
+    hackName: "redos",
     points: 20,
-    flag: "o7*Hj4",
+  },
+  {
+    hackName: "hidden",
+    points: 5,
   },
 ];
 
@@ -43,9 +48,7 @@ router.post("/", validateUser, async (req, res) => {
 
     if (user.completedHacks.includes(pointsEarned.hackName)) {
       console.log("already solved");
-      return res
-        .status(400)
-        .json({ message: "You have already solved this hack!" });
+      return res.json({ message: "You have already solved this hack, so no points for you!" });
     }
     
     user.points += pointsEarned.points;
@@ -57,7 +60,7 @@ router.post("/", validateUser, async (req, res) => {
     //console.log(updatedUser);
     res
       .status(200)
-      .json({ message: "flag has been submitted", newPoints: pointsEarned.points });
+      .json({ message: `Good job! You have completed the ${pointsEarned.hackName} and earned ${pointsEarned.points} points!`, newPoints: pointsEarned.points });
   } catch (err) {
     console.log("error in catch");
     res.status(500).send({ message: "Server error", details: err.message });

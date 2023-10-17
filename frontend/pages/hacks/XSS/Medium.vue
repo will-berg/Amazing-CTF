@@ -55,24 +55,25 @@ const postData: Ref<string> = ref("");
 const posts: Ref<string[]> = ref([]);
 const myVar = "</" + "script>"
 const completed = ref<boolean>(false);
-const xsspattern = /<script.*?>\s*alert\(\s*["']you have been hacked!["']\s*\)\s*;?\s*<\/script>/i;
-const xsspattern2 = /<img.*?onerror=alert\(\s*["']you have been hacked!["']\s*\)\s*;?\s*\/>/i;
+const xsspattern = /<script.*?>\s*alert\(\s*["']You have been hacked!["']\s*\)\s*;?\s*<\/script>/i;
+const xsspattern2 = /<img.*?onerror=alert\(\s*["']You have been hacked!["']\s*\)\s*;?\s*\/>/i;
 const showModal = ref<boolean>(true);
 const closeModal = (): void => {
     showModal.value = false;
 }
-
+const { error, newPoints, loading } = useHacking();
 //should probably make a file for these functions and import them here
-const newPost = (): void => {
+const newPost = async (): Promise<void> => {
     console.log("postdata: " + postData.value)
     console.log("<script>alert(\"You have been hacked!\");" + myVar)
     postData.value = sanitizeData(postData.value);
     //should improve the check to only look for containing the different parts to not restrict the user input
     if (xsspattern.test(postData.value) || xsspattern2.test(postData.value)) {
         alert("You have been hacked!");
-        completed.value = true;
         postData.value = "";
         //call success function here to get flag
+        await newPoints("xss-medium");
+        completed.value = true;
     }
     posts.value.push(postData.value);
     postData.value = "";

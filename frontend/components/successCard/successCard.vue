@@ -26,6 +26,11 @@ defineProps({
   hackName: {
     type: String,
     required: true
+  },
+  text: {
+    type: String,
+    required: false,
+    default: "Success!"
   }
 })
 
