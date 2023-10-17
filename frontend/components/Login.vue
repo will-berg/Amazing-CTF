@@ -1,5 +1,5 @@
 <template>
-    <form class=" h-full flex flex-col gap-3 items-center content-center">
+    <div class="h-full flex flex-col gap-3 items-center content-center">
         <h3>Sign In</h3>
         <Icon name="simple-icons:cyberdefenders" size="32" />
         <div v-if="$route.query.registered">
@@ -17,7 +17,7 @@
             Don't have an account?
             <NuxtLink to="/register" class="text-primary font-bold">Register</NuxtLink>
         </p>
-    </form>
+    </div>
 </template>
 
 <script lang="ts" setup>
